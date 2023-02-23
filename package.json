@@ -1,0 +1,37 @@
+{
+  "name": "cecs443-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "api": "npm start -w api",
+    "api:dev": "npm run dev -w api",
+    "api:build": "npm run build -w api",
+    "web": "npm start -w web",
+    "web:build": "npm run build -w web"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/S0lr4c3733/cecs443-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/S0lr4c3733/cecs443-project/issues"
+  },
+  "homepage": "https://github.com/S0lr4c3733/cecs443-project#readme",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/node": "^18.14.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "axios": "^1.3.4"
+  }
+}
