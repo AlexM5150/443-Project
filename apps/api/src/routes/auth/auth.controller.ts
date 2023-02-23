@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
+import { sign } from "jsonwebtoken";
 import { accountsSchema } from "../../schemas";
-import { ApiError, Account } from "../../tools";
+import { ApiError, Account, env } from "../../tools";
 import { Request, Response, NextFunction } from "express";
 
 export default class AuthController {
@@ -13,7 +14,7 @@ export default class AuthController {
         email: Account.encrypt(email),
         password: Account.encrypt(password),
       });
-      res.json({ message: `New user ${user._id}` });
+      res.json({ code: 200, message: `New user ${user._id}` });
     } catch (e) {
       if (e.code === 11000) next(new ApiError(409, "User already exists"));
       else next(e);
@@ -27,7 +28,8 @@ export default class AuthController {
       const user = await accountsSchema.findOne({ email: Account.encrypt(email) });
       if (!user) throw new ApiError(404, "User not found");
       if (!Account.verify(password, user.password)) throw new ApiError(403, "Invalid password");
-      res.json({ message: `Logged-in user ${user._id}` });
+      res.cookie("jwt", sign({ userId: user.id }, env.JWT_KEY));
+      res.json({ code: 200, message: `Logged-in user ${user._id}` });
     } catch (e) {
       next(e);
     }

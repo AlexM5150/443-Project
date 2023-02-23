@@ -6,6 +6,7 @@ const schema = new Schema<IAccounts>(
     _id: String,
     email: { type: String, unique: true },
     password: String,
+    budget: { type: Number, default: 0 },
   },
   { versionKey: false },
 );

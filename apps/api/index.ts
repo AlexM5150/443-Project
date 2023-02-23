@@ -7,7 +7,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 declare module "express" {
   export interface Request {
-    user: { id: string };
+    user: { _id: string; budget: number };
   }
 }
 
@@ -24,10 +24,10 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 app.use("/api", routes);
 
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  if (err instanceof ApiError) return res.status(err.status).json(err);
+  if (err instanceof ApiError) return res.status(err.code).json(err);
   if (err instanceof AxiosError && err.response.data) return res.status(err.response.status).json(err.response.data);
   console.error(err, "[API] error");
-  res.status(500).send({ status: 500, error: "Something went wrong. Check logs" });
+  res.status(500).send({ code: 500, error: "Something went wrong. Check logs" });
 });
 
 initDatabase();

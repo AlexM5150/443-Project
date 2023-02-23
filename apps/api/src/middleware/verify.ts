@@ -16,9 +16,9 @@ export default class Verify {
     const { authorization } = req.headers;
     try {
       const userId = Verify.authToken(authorization);
-      const result = await accountsSchema.findOne({ _id: userId });
+      const result = await accountsSchema.findOne({ _id: userId }, "budget");
       if (!result) throw new ApiError(404, `User ${userId} not found`);
-      req.user = { id: userId };
+      req.user = result;
       next();
     } catch (e) {
       next(e);
