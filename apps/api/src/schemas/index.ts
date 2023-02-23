@@ -1,3 +1,3 @@
-import accountSchema from "./account.schema";
+import accountsSchema from "./accounts.schema";
 
-export { accountSchema };
+export { accountsSchema };

@@ -12,4 +12,6 @@ export default {
   DB_PASSWORD: process.env.DB_PASSWORD ?? "",
   // KEYS ENV
   JWT_KEY: process.env.JWT_KEY ?? "",
+  ENCRYPTION_KEY: process.env.ENCRYPTION_KEY ?? "",
+  IV_KEY: process.env.IV_KEY ?? "",
 };
