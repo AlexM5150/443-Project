@@ -14,6 +14,7 @@ export default class AuthController {
         email: Account.encrypt(email),
         password: Account.encrypt(password),
       });
+      res.cookie("jwt", sign({ userId: user._id }, env.JWT_KEY));
       res.json({ code: 200, message: `New user ${user._id}` });
     } catch (e) {
       if (e.code === 11000) next(new ApiError(409, "User already exists"));
@@ -28,7 +29,7 @@ export default class AuthController {
       const user = await accountsSchema.findOne({ email: Account.encrypt(email) });
       if (!user) throw new ApiError(404, "User not found");
       if (!Account.verify(password, user.password)) throw new ApiError(403, "Invalid password");
-      res.cookie("jwt", sign({ userId: user.id }, env.JWT_KEY));
+      res.cookie("jwt", sign({ userId: user._id }, env.JWT_KEY));
       res.json({ code: 200, message: `Logged-in user ${user._id}` });
     } catch (e) {
       next(e);
