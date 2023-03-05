@@ -34,8 +34,8 @@ class Server {
 
   // eslint-disable-next-line
   getError(e: any) {
-    if (!isAxiosError(e)) return { error: { msg: "API request failed", active: true } };
-    return { error: { msg: e.response?.data.error || e.message, active: true } };
+    if (!isAxiosError(e)) return { msg: "API request failed", active: true };
+    return { msg: e.response?.data.error || e.message, active: true };
   }
 
   async get<T>(url: string): Promise<{ response?: T; error?: IError }> {
@@ -43,7 +43,7 @@ class Server {
       const response = await this.client.get<AxiosResponse & T>(url);
       return { response: response.data.data };
     } catch (e) {
-      return this.getError(e);
+      return { error: this.getError(e) };
     }
   }
 
@@ -52,7 +52,7 @@ class Server {
       const response = await this.client.post<AxiosResponse & T>(url, data);
       return { response: response.data.data };
     } catch (e) {
-      return this.getError(e);
+      return { error: this.getError(e) };
     }
   }
 }
