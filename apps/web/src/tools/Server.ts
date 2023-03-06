@@ -5,7 +5,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, isAxiosError, AxiosResponse }
 
 interface HttpClientOptions {
   baseURL: string;
-  headers?: Record<string, string>;
+  headers: Record<string, string>;
 }
 
 class Server {
@@ -13,11 +13,7 @@ class Server {
   private readonly client: AxiosInstance;
 
   private constructor({ baseURL, headers }: HttpClientOptions) {
-    const config: AxiosRequestConfig = {
-      baseURL,
-      headers,
-    };
-    console.log("creating new class");
+    const config: AxiosRequestConfig = { baseURL, headers };
     this.client = axios.create(config);
   }
 
@@ -25,7 +21,11 @@ class Server {
     if (!Server.instance) {
       return (Server.instance = new Server({
         baseURL: `${env.SERVER_URL}/api`,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }));
     }
     Server.instance.client.defaults.headers.Authorization = `Bearer ${token}`;
@@ -47,9 +47,10 @@ class Server {
     }
   }
 
+  // config?: AxiosRequestConfig<any> | undefined
   async post<T>(url: string, data?: any): Promise<{ response?: T; error?: IError }> {
     try {
-      const response = await this.client.post<{ data: any; message: string } & T>(url, data);
+      const response = await this.client.post<{ data: any; message: string } & T>(url, data, { withCredentials: true });
       return { response: response.data.data || response.data.message };
     } catch (e) {
       return { error: this.getError(e) };

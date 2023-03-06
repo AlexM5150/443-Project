@@ -18,3 +18,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+input {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+}

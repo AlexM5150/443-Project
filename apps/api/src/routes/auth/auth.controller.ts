@@ -11,8 +11,8 @@ export default class AuthController {
       ApiError.check("body", { email, password });
       const user = await accountsSchema.create({
         _id: uuidv4(),
-        email: Account.encrypt(email),
-        password: Account.encrypt(password),
+        email, // email: Account.encrypt(email),
+        password, // password: Account.encrypt(password),
       });
       res.cookie("jwt", sign({ userId: user._id }, env.JWT_KEY));
       res.json({ code: 200, message: `New user ${user._id}` });
@@ -26,9 +26,9 @@ export default class AuthController {
     const { email, password } = req.body;
     try {
       ApiError.check("body", { email, password });
-      const user = await accountsSchema.findOne({ email: Account.encrypt(email) });
+      const user = await accountsSchema.findOne({ email }); // Account.encrypt(email)
       if (!user) throw new ApiError(404, "User not found");
-      if (!Account.verify(password, user.password)) throw new ApiError(403, "Invalid password");
+      // if (!Account.verify(password, user.password)) throw new ApiError(403, "Invalid password");
       res.cookie("jwt", sign({ userId: user._id }, env.JWT_KEY));
       res.json({ code: 200, message: `Logged-in user ${user._id}` });
     } catch (e) {

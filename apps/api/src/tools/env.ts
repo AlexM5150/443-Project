@@ -5,6 +5,8 @@ dotenv.config();
 export default {
   // SERVER ENV
   PORT: process.env.PORT ?? "8080",
+  DOMAIN: process.env.DOMAIN ?? "",
+  WEB_URL: process.env.WEB_URL ?? process.env.DOMAIN,
   // MONGODB ENV
   DB_URL: process.env.DB_URL ?? "",
   DB_NAME: process.env.DB_NAME ?? "",

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { IError } from "./types";
+import Server from "./tools/Server";
+import { useNavigate } from "react-router-dom";
 import { Button, Notification } from "./components";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineSwap } from "react-icons/ai";
-import Server from "./tools/Server";
-import { IError } from "./types";
 
 function App() {
+  const navigation = useNavigate();
   const [visible, setVisible] = useState<boolean>(false);
   const [show, setShow] = useState<IError>({ message: "", active: false });
   const [path, setPath] = useState({ name: "Sign in", url: "sign-in" });
@@ -21,12 +23,12 @@ function App() {
       email: HTMLInputElement;
       password: HTMLInputElement;
     };
-    const { response, error } = await Server.post(`/auth/${path.url}`, {
-      email: email.value,
-      password: password.value,
+    const { error } = await Server.post(`/auth/${path.url}`, {
+      email: email.value.trim(),
+      password: password.value.trim(),
     });
     if (error) return setShow(error);
-    console.log(response);
+    // navigation("/dashboard");
   }
 
   return (
@@ -55,7 +57,7 @@ function App() {
               id="email"
               type="email"
               placeholder="example@provider.com"
-              className="w-full py-1.5 leading-loose rounded px-2 border-2"
+              className="w-full py-1.5 leading-loose px-2"
             />
           </div>
           <div className="px-2">
@@ -67,7 +69,7 @@ function App() {
                 required
                 id="password"
                 placeholder="your password"
-                className="w-full py-1.5 leading-loose px-2 rounded-tl rounded-bl border-2 border-r-0"
+                className="w-full py-1.5 leading-loose px-2"
               />
               <button
                 className="flex items-center bg-[#000000] text-white px-2 rounded-tr rounded-br"
