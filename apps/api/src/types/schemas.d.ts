@@ -4,3 +4,16 @@ export interface IAccounts {
   password: string;
   budget: number;
 }
+
+export interface IBudgets {
+  _id: string;
+  _user: string;
+  _current: number;
+  _budget: number;
+  _title: string;
+  expenses: {
+    title: string;
+    cost: number;
+    created: string;
+  }[];
+}

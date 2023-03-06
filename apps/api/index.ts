@@ -13,7 +13,7 @@ declare module "express" {
 
 const app = express();
 
-app.use(cors({ origin: [env.WEB_URL, env.DOMAIN], credentials: true}));
+app.use(cors({ origin: [env.WEB_URL, env.DOMAIN], credentials: true }));
 
 app.use((req: Request, _res: Response, next: NextFunction) => {
   const url = parse(req.url);
@@ -26,6 +26,7 @@ app.use("/api", routes);
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof ApiError) return res.status(err.code).json(err);
   if (err instanceof AxiosError && err.response.data) return res.status(err.response.status).json(err.response.data);
+  if (err instanceof Error) return res.status(400).json({ code: 400, message: err.message });
   console.error(err, "[API] error");
   res.status(500).send({ code: 500, error: "Something went wrong. Check logs" });
 });

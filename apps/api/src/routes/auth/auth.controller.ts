@@ -10,7 +10,6 @@ export default class AuthController {
     try {
       ApiError.check("body", { email, password });
       const user = await accountsSchema.create({
-        _id: uuidv4(),
         email, // email: Account.encrypt(email),
         password, // password: Account.encrypt(password),
       });
