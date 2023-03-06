@@ -21,6 +21,19 @@ export default class UserController {
       next(e);
     }
   }
+
+  static async profile(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { budget, username } = req.body;
+    try {
+      ApiError.check("body", { budget, username });
+      const result = await accountsSchema.updateOne({ _id: user._id }, { $set: { username, budget } });
+      if (!result) throw new ApiError(404, "User update failed");
+      res.json({ code: 200, message: `Updated user ${user._id}` });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export class BudgetController {
@@ -79,6 +92,36 @@ export class BudgetController {
     }
   }
 
+  static async reset(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { id } = req.query as { id: string };
+    try {
+      ApiError.check("query", { id });
+      const doc = await budgetsSchema.findOneAndUpdate(
+        { _id: id, _user: user._id },
+        { $set: { _current: 0, expenses: [] } },
+        { new: true },
+      );
+      if (!doc) throw new ApiError(404, "Budget not found");
+      res.json({ code: 200, message: `Expenses reset`, data: doc });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async getExpense(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { id } = req.query as { id: string };
+    try {
+      ApiError.check("query", { id });
+      const doc = await budgetsSchema.findOne({ _id: id, _user: user._id });
+      if (!doc) throw new ApiError(404, "Budget not found");
+      res.json({ code: 200, message: `Expenses added`, data: doc });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   static async addExpense(req: Request, res: Response, next: NextFunction) {
     const { user } = req;
     const { _id, title, cost } = req.body;
@@ -93,7 +136,6 @@ export class BudgetController {
         { runValidators: true, new: true },
       );
       if (!doc) throw new ApiError(404, "Budget not found");
-      console.log(doc);
       res.json({ code: 200, message: `Expenses added`, data: doc.expenses });
     } catch (e) {
       next(e);

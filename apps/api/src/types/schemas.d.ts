@@ -3,6 +3,7 @@ export interface IAccounts {
   email: string;
   password: string;
   budget: number;
+  username: string;
 }
 
 export interface IBudgets {
