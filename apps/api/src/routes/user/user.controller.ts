@@ -33,7 +33,6 @@ export class BudgetController {
       res.json({ code: 200, message: `Created new budget ${_title}`, data: result });
     } catch (e) {
       if (e.code === 11000) return next(new ApiError(409, `Budget: ${_title} already exists`));
-      if (e.name === "ValidationError") return next(new ApiError(400, e.errors["_budget"].message));
       next(e);
     }
   }
@@ -75,7 +74,50 @@ export class BudgetController {
       if (!acknowledged || modifiedCount === 0) throw new ApiError(404, `Budget ${_id} update failed`);
       res.json({ code: 200, message: `Update budget ${_title}`, data: result });
     } catch (e) {
-      if (e.name === "ValidationError") return next(new ApiError(400, e.errors["_budget"].message));
+      console.error(e);
+      next(e);
+    }
+  }
+
+  static async addExpense(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { _id, title, cost } = req.body;
+    try {
+      ApiError.check("body", { _id, title, cost });
+      const doc = await budgetsSchema.findOneAndUpdate(
+        { _id, _user: user._id },
+        {
+          $inc: { _current: cost },
+          $push: { expenses: { title, cost, created: new Date().toLocaleString() } },
+        },
+        { runValidators: true, new: true },
+      );
+      if (!doc) throw new ApiError(404, "Budget not found");
+      console.log(doc);
+      res.json({ code: 200, message: `Expenses added`, data: doc.expenses });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async delExpense(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { _id, cost, title } = req.body;
+    const { budget } = req.query as { budget: string };
+    try {
+      ApiError.check("query", { budget });
+      ApiError.check("body", { _id, cost, title });
+      const doc = await budgetsSchema.updateOne(
+        { _id: budget, _user: user._id, expenses: { $elemMatch: { _id } } },
+        {
+          $pull: { expenses: { _id } },
+          $inc: { _current: -cost },
+        },
+      );
+      if (!doc.modifiedCount) throw new ApiError(404, `Expense ${title} not found`);
+      res.json({ code: 200, message: `Deleted expense ${title} from ${budget}` });
+    } catch (e) {
+      console.error(e);
       next(e);
     }
   }

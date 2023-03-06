@@ -11,6 +11,9 @@ budgetRoutes.delete("/", BudgetController.delete);
 budgetRoutes.get("/", BudgetController.get);
 budgetRoutes.put("/", BudgetController.update);
 
+budgetRoutes.post("/expenses", BudgetController.addExpense);
+budgetRoutes.delete("/expenses", BudgetController.delExpense);
+
 userRoutes.use("/budget", json(), budgetRoutes);
 
 export default userRoutes;
