@@ -24,7 +24,7 @@ class Server {
   static getInstance(token: string | undefined): Server {
     if (!Server.instance) {
       return (Server.instance = new Server({
-        baseURL: env.SERVER_URL,
+        baseURL: `${env.SERVER_URL}/api`,
         headers: { Authorization: `Bearer ${token}` },
       }));
     }
@@ -33,9 +33,9 @@ class Server {
   }
 
   // eslint-disable-next-line
-  getError(e: any) {
-    if (!isAxiosError(e)) return { msg: "API request failed", active: true };
-    return { msg: e.response?.data.error || e.message, active: true };
+  private getError(e: any): IError {
+    if (!isAxiosError(e)) return { message: "API request failed", active: true };
+    return { message: e.response?.data.error || e.message, active: true };
   }
 
   async get<T>(url: string): Promise<{ response?: T; error?: IError }> {
@@ -49,8 +49,8 @@ class Server {
 
   async post<T>(url: string, data?: any): Promise<{ response?: T; error?: IError }> {
     try {
-      const response = await this.client.post<AxiosResponse & T>(url, data);
-      return { response: response.data.data };
+      const response = await this.client.post<{ data: any; message: string } & T>(url, data);
+      return { response: response.data.data || response.data.message };
     } catch (e) {
       return { error: this.getError(e) };
     }

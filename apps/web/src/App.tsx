@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Button } from "./components";
-import { AiFillEye, AiOutlineSwap } from "react-icons/ai";
+import { Button, Notification } from "./components";
+import { AiFillEye, AiFillEyeInvisible, AiOutlineSwap } from "react-icons/ai";
+import Server from "./tools/Server";
+import { IError } from "./types";
 
 function App() {
+  const [visible, setVisible] = useState<boolean>(false);
+  const [show, setShow] = useState<IError>({ message: "", active: false });
   const [path, setPath] = useState({ name: "Sign in", url: "sign-in" });
 
   function handleButtonClick() {
@@ -17,9 +21,12 @@ function App() {
       email: HTMLInputElement;
       password: HTMLInputElement;
     };
-    console.log("path", path.url);
-    console.log("email", email.value);
-    console.log("password", password.value);
+    const { response, error } = await Server.post(`/auth/${path.url}`, {
+      email: email.value,
+      password: password.value,
+    });
+    if (error) return setShow(error);
+    console.log(response);
   }
 
   return (
@@ -55,16 +62,19 @@ function App() {
             <label className="text-sm flex mb-1">Password</label>
             <div className="inline-flex w-full">
               <input
-                type={"password"}
+                type={visible ? "text" : "password"}
                 autoComplete="off"
                 required
                 id="password"
                 placeholder="your password"
                 className="w-full py-1.5 leading-loose px-2 rounded-tl rounded-bl border-2 border-r-0"
               />
-              <div className="flex items-center bg-[#000000] text-white px-2 rounded-tr rounded-br">
-                <AiFillEye className="w-7 h-6" />
-              </div>
+              <button
+                className="flex items-center bg-[#000000] text-white px-2 rounded-tr rounded-br"
+                type="button"
+                onClick={() => setVisible(!visible)}>
+                {visible ? <AiFillEyeInvisible className="w-7 h-6" /> : <AiFillEye className="w-7 h-6" />}
+              </button>
             </div>
           </div>
           <div className=" grid grid-cols-2 place-items-center">
@@ -75,6 +85,7 @@ function App() {
           </div>
         </form>
       </div>
+      <Notification display={[show, setShow]} />
     </div>
   );
 }

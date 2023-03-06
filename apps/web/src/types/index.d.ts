@@ -1,4 +1,4 @@
 export interface IError {
-  msg: string;
+  message: string;
   active: boolean;
 }
