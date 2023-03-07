@@ -109,6 +109,46 @@ export class BudgetController {
     }
   }
 
+  static async createCat(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { category, budget, id } = req.body;
+    try {
+      ApiError.check("body", { category, budget, id });
+      const doc = await budgetsSchema.findOne({ _id: id, _user: user._id });
+      if (!doc) throw new ApiError(404, `Budget ${id} not found`);
+      if (doc._budget < budget)
+        throw new ApiError(400, `Category budget ${budget} must be lower than budget ${doc._budget}`);
+      const categories = doc.expenses.map((cat) => cat.category);
+      console.log("categories", categories);
+      if (categories.includes(category)) throw new ApiError(400, `Category ${category} already exists`);
+      const update = await budgetsSchema.findOneAndUpdate(
+        { _id: id, _user: user._id, "expenses.category": { $ne: category } },
+        { $push: { expenses: { category, budget } } },
+        { new: true },
+      );
+      if (!update) throw new ApiError(400, `Failed to add category: ${category}`);
+      res.json({ code: 200, message: `Created category ${category}`, data: update });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  static async deleteCat(req: Request, res: Response, next: NextFunction) {
+    const { user } = req;
+    const { id, category } = req.query as { id: string; category: string };
+    try {
+      ApiError.check("query", { id, category });
+      const doc = await budgetsSchema.updateOne(
+        { _id: id, _user: user._id, expenses: { $elemMatch: { _id: category } } },
+        { $pull: { expenses: { _id: category } } },
+      );
+      if (!doc) throw new ApiError(404, `Category ${category} not found`);
+      res.json({ code: 200, message: `Deleted category ${category}` });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   static async getExpense(req: Request, res: Response, next: NextFunction) {
     const { user } = req;
     const { id } = req.query as { id: string };

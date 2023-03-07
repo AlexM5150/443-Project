@@ -19,18 +19,33 @@ const schema = new Schema<IBudgets>(
     _title: { type: String, required: true, unique: true },
     expenses: [
       {
-        title: { type: String, required: true },
-        cost: {
+        category: { type: String, required: true, unique: true },
+        budget: {
           type: Number,
           required: true,
           validate: {
             validator: function (value: number) {
-              if (value <= 0) throw new ApiError(400, `Expense value ${value} must be higher than 1`);
+              if (value <= 0) throw new Error(`Category budget ${value} must be higher than 1`);
             },
-            message: (props: ValidatorProps & { reason: ApiError }) => props.reason.error,
+            message: (props: ValidatorProps & { reason: Error }) => props.reason.message,
           },
         },
-        created: { type: String },
+        expenses: [
+          {
+            title: { type: String, required: true },
+            cost: {
+              type: Number,
+              required: true,
+              validate: {
+                validator: function (value: number) {
+                  if (value <= 0) throw new Error(`Category expense ${value} must be higher than 1`);
+                },
+                message: (props: ValidatorProps & { reason: Error }) => props.reason.message,
+              },
+            },
+            created: { type: String },
+          },
+        ],
       },
     ],
   },
