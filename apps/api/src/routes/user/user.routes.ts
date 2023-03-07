@@ -16,10 +16,13 @@ budgetRoutes.put("/reset", BudgetController.reset);
 const categoryRoutes = Router();
 categoryRoutes.post("/", BudgetController.createCat);
 categoryRoutes.delete("/", BudgetController.deleteCat);
+categoryRoutes.get("/", BudgetController.getCat);
+categoryRoutes.put("/", BudgetController.editCat);
 
-budgetRoutes.get("/expenses", BudgetController.getExpense);
-budgetRoutes.post("/expenses", BudgetController.addExpense);
-budgetRoutes.delete("/expenses", BudgetController.delExpense);
+categoryRoutes.get("/expenses", BudgetController.getExpense);
+categoryRoutes.post("/expenses", BudgetController.addExpense);
+categoryRoutes.delete("/expenses", BudgetController.delExpense);
+categoryRoutes.put("/expenses", BudgetController.editExpense);
 
 budgetRoutes.use("/category", json(), categoryRoutes);
 userRoutes.use("/budget", json(), budgetRoutes);

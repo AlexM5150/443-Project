@@ -7,6 +7,7 @@ export interface IAccounts {
 }
 
 export interface IExpenses {
+  _id: string;
   title: string;
   cost: number;
   created: string;
@@ -19,8 +20,10 @@ export interface IBudgets {
   _budget: number;
   _title: string;
   expenses: {
+    _id: string;
     category: string;
     budget: number;
+    current: number;
     expenses: IExpenses[];
   }[];
 }
