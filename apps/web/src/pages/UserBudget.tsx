@@ -182,9 +182,7 @@ function BudgetPage() {
                     <ul className="list-inside">
                         {budget.expenses.map((category, index) => {
                             const categoryClasses = ["p-4", "flex", "justify-between", index % budget.expenses.length === 0 ? "bg-red-200" : index % budget.expenses.length === 1 ? "bg-green-200" : index % budget.expenses.length === 2 ? "bg-yellow-200" : index % budget.expenses.length === 3 ? "bg-orange-200" : index % budget.expenses.length === 4 ? "bg-purple-200" : index % budget.expenses.length === 5 ? "bg-blue-200" : "bg-pink-200", "relative",];
-
                             const showExpenses = categoryStates[category.category];
-
                             return (
                                 <li key={category.category} className={categoryClasses.join(" ")}>
                                     <button

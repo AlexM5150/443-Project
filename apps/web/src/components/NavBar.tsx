@@ -13,7 +13,7 @@ function Navbar() {
                 <div>
                     <div className="flex items-center justify-between py-3 md:py-5 md:block">
                         <div className="flex items-center flex-shrink-0  mr-6">
-                            <img
+                            <img       
                                 className='fill-current h-12 w-12 mr-2'
                                 src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/CSU-Longbeach_seal.svg/1200px-CSU-Longbeach_seal.svg.png"
                                 alt="csulb-logo"
