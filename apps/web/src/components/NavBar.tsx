@@ -68,13 +68,19 @@ function Navbar() {
                                 <a href="#">Home</a>
                             </li>
                             <li className="text-black hover:text-white">
-                                <a href="/budget">Budget</a>
+                                <a href="/budgets">Budgets</a>
                             </li>
                             <li className="text-black hover:text-white">
-                                <a href="/dashboard">Dashboard</a>
+                                <a href="/budget">Transactions</a>
                             </li>
                             <li className="text-black hover:text-white">
-                                <a href="#">Profile</a>
+                                <a href="/dashboard">Reports</a>
+                            </li>
+                            <li className="text-black hover:text-white">
+                                <a href="#">Settings</a>
+                            </li>
+                            <li className="text-black hover:text-white">
+                                <a href="#">Help</a>
                             </li>
                         </ul>
                     </div>
