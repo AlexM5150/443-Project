@@ -65,7 +65,7 @@ function Navbar() {
                     >
                         <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                             <li className="text-black hover:text-white">
-                                <a href="#">Home</a>
+                                <a href="/">Home</a>
                             </li>
                             <li className="text-black hover:text-white">
                                 <a href="/budgets">Budgets</a>
@@ -77,10 +77,10 @@ function Navbar() {
                                 <a href="/dashboard">Reports</a>
                             </li>
                             <li className="text-black hover:text-white">
-                                <a href="#">Settings</a>
+                                <a href="/">Settings</a>
                             </li>
                             <li className="text-black hover:text-white">
-                                <a href="#">Help</a>
+                                <a href="/">Help</a>
                             </li>
                         </ul>
                     </div>
