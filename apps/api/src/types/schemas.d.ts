@@ -6,6 +6,13 @@ export interface IAccounts {
   username: string;
 }
 
+export interface IExpenses {
+  _id: string;
+  title: string;
+  cost: number;
+  created: string;
+}
+
 export interface IBudgets {
   _id: string;
   _user: string;
@@ -13,8 +20,10 @@ export interface IBudgets {
   _budget: number;
   _title: string;
   expenses: {
-    title: string;
-    cost: number;
-    created: string;
+    _id: string;
+    category: string;
+    budget: number;
+    current: number;
+    expenses: IExpenses[];
   }[];
 }
