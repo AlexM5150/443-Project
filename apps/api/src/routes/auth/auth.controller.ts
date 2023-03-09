@@ -12,6 +12,7 @@ export default class AuthController {
       const user = await accountsSchema.create({
         email, // email: Account.encrypt(email),
         password, // password: Account.encrypt(password),
+        username: email,
       });
       res.cookie("jwt", sign({ userId: user._id }, env.JWT_KEY));
       res.json({ code: 200, message: `New user ${user._id}` });
