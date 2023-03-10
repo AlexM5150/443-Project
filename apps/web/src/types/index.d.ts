@@ -6,7 +6,9 @@ export interface IError {
 export interface ICategoryStates {
   [index: string]: boolean;
 }
+
 export interface IBudget {
+  id: string;
   _id: string;
   _user: string;
   _current: number;

@@ -3,7 +3,7 @@ import Category from "./Category"
 import Expenses from "./Expenses"
 import { IBudget, ICategoryStates } from "../types"
 
-function Budget({ budget, isOpen, toggleOpen, categoryStates, toggleCategory }: { budget: IBudget, isOpen: boolean, toggleOpen: () => void, categoryStates: ICategoryStates, toggleCategory: (category: string) => void }) {
+function Budget({ budget, isOpen, toggleOpen, categoryStates, toggleCategory, id }: { budget: IBudget, isOpen: boolean, toggleOpen: () => void, categoryStates: ICategoryStates, toggleCategory: (category: string) => void, id: string }) {
     return (
         <div>
             <Title title={budget._title} budget={budget._budget} onClick={toggleOpen} />
