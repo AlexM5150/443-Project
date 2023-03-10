@@ -29,7 +29,7 @@ function App() {
       password: password.value.trim(),
     });
     if (error) return setShow(error);
-     // navigation("/expense");
+     navigation("/expense");
   }
 
   return (
