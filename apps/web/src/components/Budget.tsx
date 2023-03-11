@@ -3,21 +3,21 @@ import Category from "./Category"
 import Expenses from "./Expenses"
 import { IBudget, ICategoryStates } from "../types"
 
-function Budget({ budget, isOpen, toggleOpen, categoryStates, toggleCategory, id }: { budget: IBudget, isOpen: boolean, toggleOpen: () => void, categoryStates: ICategoryStates, toggleCategory: (category: string) => void, id: string }) {
+function Budget({ budget, isOpen, toggleOpen, categoryStates, toggleCategory }: { budget: IBudget, isOpen: boolean, toggleOpen: () => void, categoryStates: ICategoryStates, toggleCategory: (category: string) => void }) {
     return (
         <div>
             <Title title={budget._title} budget={budget._budget} onClick={toggleOpen} />
             {isOpen && (
                 <>
                     {budget.expenses.map((category, key) => {
-                        const showExpenses = categoryStates[category.category];
+                        const showExpenses = categoryStates[category._id];
                         return (
                             <div key={key} className="border border-gray-200">
                                 <Category
                                     category={category.category}
                                     budget={category.budget}
                                     current={category.current}
-                                    onClick={() => toggleCategory(category.category)}
+                                    onClick={() => toggleCategory(category._id)}
                                 />
                                 {showExpenses &&
                                     category.expenses.map((expense, key) => (

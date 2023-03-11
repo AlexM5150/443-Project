@@ -29,7 +29,6 @@ function Budgets({ budgets, isOpen, toggleOpen, categoryStates, toggleCategory, 
                                     toggleOpen={() => toggleOpen(key)}
                                     categoryStates={categoryStates}
                                     toggleCategory={toggleCategory}
-                                    id={budget._id}
                                 />
                             </div>
                             <div className="mx-2 space-x-5">
@@ -43,7 +42,7 @@ function Budgets({ budgets, isOpen, toggleOpen, categoryStates, toggleCategory, 
                 )}
             <Modal
                 isOpen={modalOpen}
-                onClose={() => setModalOpen(false)}
+                onClose={() => {setModalOpen(false)}}
                 titleLabel={"Title"}
                 title={title}
                 onTitleChange={(event) => setTitle(event.target.value)}
@@ -52,7 +51,7 @@ function Budgets({ budgets, isOpen, toggleOpen, categoryStates, toggleCategory, 
                 onAmountChange={(event) => setAmount(parseInt(event.target.value))}
                 id={id} 
                 setBudgets={setBudgets} 
-                budgets={budgets}            />
+                budgets={budgets} />
         </div>
     );
 }

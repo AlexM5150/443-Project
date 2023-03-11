@@ -29,9 +29,13 @@ function BudgetPage() {
     };
 
     const toggleCategory = (category: string) => {
-        setCategoryStates({
-            ...categoryStates,
-            [category]: !categoryStates[category]
+        setCategoryStates(prevState => {
+            const newState: ICategoryStates = {};
+            for (const key in prevState) {
+                newState[key] = key === category ? !prevState[key] : false;
+            }
+            newState[category] = !prevState[category];
+            return newState;
         });
     };
 
