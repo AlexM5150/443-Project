@@ -1,7 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { AiOutlineSwap } from "react-icons/ai";
-import { Button } from "../components";
 import Navbar from "../components/NavBar";
 export default function Expenses() {
 
@@ -18,48 +16,59 @@ export default function Expenses() {
     // IF new_total_amount > total_budget: reject that budget and send a notification to the user
     // that the budget will go over if we add the expense
     // flex flex-col items-center justify-center
-    useEffect(() => {
-        retrieveCategories()
-    }, [])
 
-    const category = [
-        {value: 'food', label: "Food"},
-        {value: 'gas', label: "Gas"},
-    ];
+
 
     /**
      * sets the list of categories called from the api to the "categories" state
      * @returns Default Category Item
      */
-    const retrieveCategories = () => {
+    useEffect(() => {
+        // make the api call here?
+        const category = [
+            {value: 'food', label: "Food"},
+            {value: 'gas', label: "Gas"},
+        ];
+
         setCategories(category)
-        return 'Category'
-    }
+    }, [])
+
+
 
     /**
      * Custom Component for a dropdown menu of the categories
      * @returns a react component
      */
     const DropDownMenu = () => {
+        const [preview, setpreview] = useState<string>('category');
         const [showMenu, setShowMenu] = useState<boolean>(false);
 
-        useEffect(() => {
-            
-        }, [])
 
-        return(
-        <div className="text-left border boreder-gray-400 relative">
-            <div className="p-1 flex items-center justify-between select-none">
-                <div >{retrieveCategories()}</div>
-                
-                {(<div className="absolute border max-h-40 translate-y-14 overflow-auto hover:bg-gray-200 rounded">
-                    {(categories.map(option => (
-                        <div key={option.value} className="p-1 cursor-pointer">{option.label}</div>
-                    )
-                    ))}
-                </div>)}
+        useEffect(() => {
+            PopulateDropDown()
+        })
+
+        const handleChange = (value: string) => {
+            setpreview(value)
+        }
+
+        const PopulateDropDown = () => {
+            return(
+            <div className="text-left border boreder-gray-400" >
+                <div className="p-1 items-center justify-between select-none w-32" onClick={() => setShowMenu(!showMenu)}>
+                    {preview}
+                </div>
+                {showMenu && (<div className="border max-h-40 overflow-auto rounded">
+                        {categories.map(option => (
+                            <div key={option.value} className="p-1 cursor-pointer hover:bg-gray-200"
+                            onClick={() => handleChange(option.label)}> {option.label} </div>
+                        ))}
+                    </div>)}
             </div>
-        </div>
+            )
+        }
+        return(
+            <div>{PopulateDropDown()}</div>
         )
     }
     const handleSubmit = () => {
@@ -71,8 +80,8 @@ export default function Expenses() {
             <Navbar />
             <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
                 <div className="text-center text-2xl mb-2 mt-2 justify-center items-center content-center">Add Expense</div>
-                <div className="h-96 flex justify-items-start border border-t-gray-400">
-                    <form className="row-span-4 space-y-2 flex flex-row justify-evenly" onSubmit={handleSubmit}>
+                <div className="h-96 flex justify-evenly border border-t-gray-400">
+                    <form className="row-span-4 space-y-2 flex" onSubmit={handleSubmit}>
                         <div>
                             <DropDownMenu />
                         </div>
