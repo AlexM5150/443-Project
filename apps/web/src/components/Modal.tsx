@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, FormEvent, SetStateAction } from 'react';
 import { Server } from '../tools';
 import { IBudget } from '../types';
 
@@ -12,7 +12,7 @@ type ModalProps = {
     amount: string;
     id: string;
     onAmountChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    setBudgets: (value: React.SetStateAction<IBudget[]>) => void,
+    setBudgets: (value: SetStateAction<IBudget[]>) => void,
     budgets: IBudget[]
 };
 
@@ -29,7 +29,7 @@ function Modal({
     setBudgets,
     budgets,
 }: ModalProps) {
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { error } = await Server.put<IBudget[]>('/user/budget', {
             _budget: amount,
