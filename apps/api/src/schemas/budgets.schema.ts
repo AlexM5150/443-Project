@@ -19,7 +19,7 @@ const schema = new Schema<IBudgets>(
     _title: { type: String, required: true, unique: true },
     expenses: [
       {
-        category: { type: String, required: true, unique: true },
+        category: { type: String, required: true},
         current: { type: Number, default: 0 },
         budget: {
           type: Number,

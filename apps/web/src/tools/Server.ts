@@ -56,6 +56,24 @@ class Server {
       return { error: this.getError(e) };
     }
   }
+
+  async put<T>(url: string, data?: any): Promise<{ response?: T; error?: IError }> {
+    try {
+      const response = await this.client.put<{ data: any; message: string } & T>(url, data, { withCredentials: true });
+      return { response: response.data.data || response.data.message };
+    } catch (e) {
+      return { error: this.getError(e) };
+    }
+  }
+
+  async delete<T>(url: string, data?: any): Promise<{ response?: T; error?: IError }> {
+    try {
+      const response = await this.client.delete<{ data: any; message: string } & T>(url, data);
+      return { response: response.data.data || response.data.message };
+    } catch (e) {
+      return { error: this.getError(e) };
+    }
+  }
 }
 
 export default Server.getInstance(Cookies.get("jwt"));
