@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Dashboard } from "./pages";
 import Expenses from "./pages/Expenses";
 import UserBudget from "./pages/UserBudget";
+import Notifications from "./pages/Notifications";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -16,6 +17,8 @@ root.render(
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path ="/expense" element={<Expenses />} />
         <Route path="/budget" element={<UserBudget />} />
+        <Route path="/notifications" element={<Notifications />} />
+
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
