@@ -178,6 +178,13 @@ export default function Expenses() {
      */
     const ProgressBar = (props: {completed: number}) => {
         const completed = props;
+        let color = 'blue'
+        if (completed.completed < 25){
+            color = 'green'
+        }
+        else if (completed.completed > 85){
+            color = 'red'
+        }
         // container styles sheet
         const container= {
             height: 25,
@@ -190,7 +197,7 @@ export default function Expenses() {
         const percentFilled: any = {
             height: '100%',
             width: `${completed.completed}%`,
-            backgroundColor: 'blue',
+            backgroundColor: `${color}`,
             borderRadius: 'inherit',
             textAlign: 'center',
             
