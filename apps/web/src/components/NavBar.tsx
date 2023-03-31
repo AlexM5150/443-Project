@@ -65,7 +65,7 @@ function Navbar() {
                     >
                         <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                             <li className="text-black hover:text-white">
-                                <a href="/">Home</a>
+                                <a href="/notifications">Home</a>
                             </li>
                             <li className="text-black hover:text-white">
                                 <a href="/budgets">Budgets</a>
