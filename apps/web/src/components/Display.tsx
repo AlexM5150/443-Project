@@ -1,9 +1,5 @@
-import React from "react";
 import { useState, useEffect } from "react";
-import Navbar from "../components/NavBar";
-import { IError, IBudget } from "../types";
-import Server from "../tools/Server";
-import { Notification } from "../components";
+import { IBudget } from "../types";
 import ProgressBar from "./ProgressBar";
 
 export default function Display({budgets, currentBudget}: {budgets: IBudget[], currentBudget: IBudget}){
@@ -28,13 +24,10 @@ export default function Display({budgets, currentBudget}: {budgets: IBudget[], c
             <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
             <h1 className="text-2xl font-bold bg-gray-100 p-4 mb-4">Latest Budget Monitor</h1>
             <h1 className="text-2xl font-bold p-4 mb-4">{CurrentBudget?._title}</h1>
-            
-            
-            <div>
-            <h2 className="text-lg font-medium p-4 mb-2">Total Budget: ${CurrentBudget?._budget}</h2>
+
+                <ul className="list-inside">
+                <h2 className="text-lg font-medium p-4 mb-2">Total Budget: spent ${CurrentBudget?._current} out of ${CurrentBudget?._budget}</h2>
             <div className="p-4"><ProgressBar completed={Math.ceil((CurrentBudget?._current? CurrentBudget._current / CurrentBudget._budget: 0) * 100)} /></div>
-            </div>
-            <ul className="list-inside">
                 {CurrentBudget?.expenses.map((category) => {
                     
                     let percentAmount = (category.current / category.budget) * 100
@@ -46,7 +39,7 @@ export default function Display({budgets, currentBudget}: {budgets: IBudget[], c
                         <li key={category.category} className="p-4">
                             <div className="flex flex-row">
                             <h3 className="text-lg font-medium mb-2">
-                                {category.category}: ${category.budget}
+                                {category.category}: spent ${category.current} out of ${category.budget}
                             </h3>
                             </div>
                             <ProgressBar completed={Math.floor(percentAmount)} />
