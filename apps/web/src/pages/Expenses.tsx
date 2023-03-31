@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-// import Navbar from "../components/NavBar";
+import Navbar from "../components/NavBar";
 import { IError } from "../types";
 import Server from "../tools/Server";
 import { Notification } from "../components";
@@ -87,7 +87,7 @@ export default function Expenses() {
 
     return(
         <div>
-            {/* <Navbar /> */}
+            <Navbar />
             <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
                 <div className="text-center text-2xl mb-2 mt-2 justify-center items-center content-center">Add Expense</div>
                 <div className="h-96 flex justify-evenly border border-t-gray-400">
