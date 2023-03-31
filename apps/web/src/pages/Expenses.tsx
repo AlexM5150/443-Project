@@ -1,13 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Navbar from "../components/NavBar";
+// import Navbar from "../components/NavBar";
 import { IError } from "../types";
 import Server from "../tools/Server";
 import { Notification } from "../components";
+import { useLocation } from "react-router-dom";
+import { ICategory } from "../types";
 // Created by Dylan Huynh and Deric Cheng
 export default function Expenses() {
+    const {state} = useLocation();
+    const {budget_id, category_id} = state;
     const [show, setShow] = useState<IError>({ message: "", active: false });
-    const [categories, setCategories] = useState<{value: string; label: string}[]>([{value:"", label:""}]);
+    const [category, setCategory] = useState<ICategory>();
     // get a list of categories by calling the API
     // if no categories exist, the user cannot create an expense so check for that
     // once we get a list of categories we can create a form
@@ -29,18 +33,14 @@ export default function Expenses() {
      */
     useEffect(() => {
         // make the api call here?
-        const category = [
-            {value: '00000', label: "Food"},
-            {value: '00001', label: "Gas"},
-            {value: '00002', label: "Travel"},
-            {value: '00003', label: 'Shoes'},
-            {value: '00004', label: 'Dessert'},
-            {value: '00005', label: 'Video Games'}
-        ];
-
-        setCategories(category)
+        getBudget(budget_id, category_id)
+        // change to ensure that we have 1 category ID and budget ID
     }, [])
 
+    const getBudget = async (budget_id: string, category_id: string) => {
+        const {response} = await Server.get<ICategory>(`/user/budget/category?id=${budget_id}&category=${category_id}`)
+        setCategory(response as ICategory)
+    }
 
 
     /**
@@ -63,13 +63,7 @@ export default function Expenses() {
             return(
                 <div className="px-2">
                     <label className="text-sm flex mb-1">Category</label>
-                    
-                    <select name="category" required className="p-2 my-1.5 overflow-y-auto">
-                        {categories.map(option => (
-                            <option className="p-1 cursor-pointer" key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-
-                    </select>
+                    <p>{category?.category}</p>
                     
                     
                 </div>
@@ -93,7 +87,7 @@ export default function Expenses() {
 
     return(
         <div>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
                 <div className="text-center text-2xl mb-2 mt-2 justify-center items-center content-center">Add Expense</div>
                 <div className="h-96 flex justify-evenly border border-t-gray-400">

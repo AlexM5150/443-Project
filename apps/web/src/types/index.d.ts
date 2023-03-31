@@ -27,3 +27,16 @@ export interface IBudget {
     }[];
   }[];
 }
+
+export interface ICategory{
+  category: string;
+  current: number;
+  budget: number;
+  _id: string;
+  expenses: {
+    title: string;
+    cost: number;
+    created: string;
+    _id: string;
+  }[];  
+}

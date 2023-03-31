@@ -17,6 +17,8 @@ function Budget({ budget, isOpen, toggleOpen, categoryStates, toggleCategory }: 
                                     category={category.category}
                                     budget={category.budget}
                                     current={category.current}
+                                    category_id={category._id}
+                                    budget_id={budget._id}
                                     onClick={() => toggleCategory(category._id)}
                                 />
                                 {showExpenses &&
