@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { IError } from "./types";
-import Server from "./tools/Server";
+import { Server } from "./tools";
 import { useNavigate } from "react-router-dom";
 import { Button, Notification } from "./components";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineSwap } from "react-icons/ai";
-import NavBar from "./components/NavBar";
 
 function App() {
   const navigation = useNavigate();
@@ -29,12 +28,12 @@ function App() {
       password: password.value.trim(),
     });
     if (error) return setShow(error);
-     navigation("/notifications");
+    navigation("/notifications");
+    //navigation("/budgets");
   }
 
   return (
     <div>
-      <NavBar />
       <div className="flex items-center justify-center h-screen w-screen">
         <div className="grid grid-rows-5 grid-flow-col gap-x-2 gap-y-2 bg-white p-2 rounded drop-shadow-md">
           <div className="row-span-5 w-80 hidden md:block">

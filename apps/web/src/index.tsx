@@ -16,9 +16,10 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path ="/expense" element={<Expenses />} />
-        <Route path="/budget" element={<UserBudget />} />
+        
         <Route path="/notifications" element={<Notifications />} />
 
+        <Route path="/budgets" element={<UserBudget />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
