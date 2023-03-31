@@ -15,8 +15,6 @@ export default function Display({budgets, currentBudget}: {budgets: IBudget[], c
     useEffect(() => {
         setCurrentBudget(currentBudget)
     }, []);
-
-
    
     return(
         <div>
@@ -36,6 +34,8 @@ export default function Display({budgets, currentBudget}: {budgets: IBudget[], c
                     // maybe calculate the amount spent?
                     // const categoryClasses = ["p-4", "flex", "justify-between", index % budget.expenses.length === 0 ? "bg-red-200" : index % budget.expenses.length === 1 ? "bg-green-200" : index % budget.expenses.length === 2 ? "bg-yellow-200" : index % budget.expenses.length === 3 ? "bg-orange-200" : index % budget.expenses.length === 4 ? "bg-purple-200" : index % budget.expenses.length === 5 ? "bg-blue-200" : "bg-pink-200", "relative",];
                     return (
+                        <div>
+                        <h1 className="text-2xl font-bold p-4 mb-4">Expenses</h1>
                         <li key={category.category} className="p-4">
                             <div className="flex flex-row">
                             <h3 className="text-lg font-medium mb-2">
@@ -44,6 +44,7 @@ export default function Display({budgets, currentBudget}: {budgets: IBudget[], c
                             </div>
                             <ProgressBar completed={Math.floor(percentAmount)} />
                         </li>
+                        </div>
                     );
                 })}
                     </ul>
