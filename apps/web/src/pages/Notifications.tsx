@@ -6,16 +6,19 @@ import Server from "../tools/Server";
 import { Notification } from "../components";
 
 import Display from "../components/Display";
-// sample budget
 
-// Created by Dylan Huynh and Deric Cheng
+// Created by Dylan Huynh
+/**
+ * 
+ * @returns a react component that displays the most recent budget as a progress bar
+ */
 export default function Notifications() {
-    // const [show, setShow] = useState<IError>({ message: "", active: false });
     const [UserBudget, setUserBudget] = useState<IBudget[]>([]);
     
 
     useEffect(() => {
         const getBudget = async () => {
+            // gets the budget and set it to a state
             const { response } = await Server.get<IBudget[]>("/user/budget");
             setUserBudget(response as IBudget[])
         }
@@ -24,7 +27,10 @@ export default function Notifications() {
 
     if (UserBudget.length === 0) {
         return(
-            <div>Please add a budget</div>
+            <div>
+                <Navbar />
+                <h3>Please add a budget</h3>
+            </div>
         )
     }
     return(

@@ -1,5 +1,9 @@
 import React from "react";
-
+/**
+ * Created by Dylan Huynh
+ * @param props a value that represents how much of the progress bar is completed
+ * @returns React component that represents a progress bar
+ */
 export default function ProgressBar(props: {completed: number}){
     const completed = props;
     let color = 'blue'
