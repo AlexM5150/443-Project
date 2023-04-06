@@ -29,7 +29,10 @@ export default function Notifications() {
         return(
             <div>
                 <Navbar />
-                <h3>Please add a budget</h3>
+                <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
+                    <h1 className="text-2xl font-bold bg-gray-100 p-4 mb-4">Please add a budget</h1>
+                </div>
+                
             </div>
         )
     }

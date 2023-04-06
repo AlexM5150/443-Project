@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Server } from '../tools'
 import { Budgets } from "../components"
 import { IBudget, ICategoryStates } from "../types"
+import Navbar from '../components/NavBar';
 
 function BudgetPage() {
 
@@ -52,6 +53,7 @@ function BudgetPage() {
 
     return (
         <div>
+            <Navbar />
             <div className="flex flex-row justify-center items-center mt-5">
                 <Budgets
                     budgets={budgets}
