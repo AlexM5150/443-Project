@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import { ICategory } from "../types";
 // Created by Dylan Huynh and Deric Cheng
 export default function Expenses() {
+    // passed in parameters thru the "UserBudget" page
     const {state} = useLocation();
     const {budget_id, category_id} = state;
     const [show, setShow] = useState<IError>({ message: "", active: false });
@@ -32,7 +33,7 @@ export default function Expenses() {
      * @returns Default Category Item
      */
     useEffect(() => {
-        // make the api call here?
+        // using the passed in parameters to make an API call and set the category
         getBudget(budget_id, category_id)
         // change to ensure that we have 1 category ID and budget ID
     }, [])

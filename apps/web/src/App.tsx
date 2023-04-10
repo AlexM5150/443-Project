@@ -28,7 +28,8 @@ function App() {
       password: password.value.trim(),
     });
     if (error) return setShow(error);
-     navigation("/budgets");
+    navigation("/notifications");
+    //navigation("/budgets");
   }
 
   return (
