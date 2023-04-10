@@ -23,6 +23,17 @@ export default function Notifications() {
             setUserBudget(response as IBudget[])
         }
         getBudget();
+
+
+        const checkDeadline = (budget: IBudget) => {
+            const date = new Date()
+            const day = date.getDay()
+            const month = date.getMonth() + 1
+            const year = date.getFullYear()
+
+            const budgetCreated = budget._current // this will be changed to created or something
+            // check when date was created and compare <= with getTime();
+        }
     }, []);
 
     if (UserBudget.length === 0) {
