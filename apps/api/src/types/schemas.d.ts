@@ -19,11 +19,13 @@ export interface IBudgets {
   _current: number;
   _budget: number;
   _title: string;
+  created: number;
   expenses: {
     _id: string;
     category: string;
     budget: number;
     current: number;
+    created: number;
     expenses: IExpenses[];
   }[];
 }

@@ -71,16 +71,7 @@ function Navbar() {
                                 <a href="/budgets">Budgets</a>
                             </li>
                             <li className="text-black hover:text-white">
-                                <a href="/budget">Transactions</a>
-                            </li>
-                            <li className="text-black hover:text-white">
-                                <a href="/dashboard">Reports</a>
-                            </li>
-                            <li className="text-black hover:text-white">
-                                <a href="/">Settings</a>
-                            </li>
-                            <li className="text-black hover:text-white">
-                                <a href="/">Help</a>
+                                <a href="/dashboard">Help</a>
                             </li>
                         </ul>
                     </div>
