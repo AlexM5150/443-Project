@@ -12,6 +12,7 @@ export interface IBudget {
   _id: string;
   _user: string;
   _current: number;
+  created: number;
   _budget: number;
   _title: string;
   expenses: {
