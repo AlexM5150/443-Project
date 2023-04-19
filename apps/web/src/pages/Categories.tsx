@@ -56,7 +56,7 @@ export default function Categories() {
         };
         const { error } = await Server.post(`/user/budget/category`, {
             category: category.value.trim(),
-            budget: budget.value.trim(),
+            budget: Number(budget.value.trim()),
             id: id.value.trim(),
           });
           if (error) return setShow(error);
