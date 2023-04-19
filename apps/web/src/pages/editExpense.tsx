@@ -29,7 +29,7 @@ function EditExpense() {
     const { error } = await Server.put(`/user/budget/category/expenses`, {
       category: category.value.trim(),
       title: title.value.trim(),
-      cost: cost.value.trim(),
+      cost: Number(cost.value.trim()),
       id: id.value.trim(), //budget id
       expense: expense.value.trim(),
     });

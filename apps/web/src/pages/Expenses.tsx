@@ -81,7 +81,7 @@ export default function Expenses() {
     const { error } = await Server.post(`/user/budget/category/expenses`, {
       category: category.value.trim(),
       title: title.value.trim(),
-      cost: cost.value.trim(),
+      cost: Number(cost.value.trim()),
       id: id.value.trim(),
     });
     if (error) return setShow(error);
