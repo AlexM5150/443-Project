@@ -24,11 +24,12 @@ export interface IBudget {
       cost: number;
       created: string;
       _id: string;
+      category: string;
     }[];
   }[];
 }
 
-export interface ICategory{
+export interface ICategory {
   category: string;
   current: number;
   budget: number;
@@ -38,5 +39,5 @@ export interface ICategory{
     cost: number;
     created: string;
     _id: string;
-  }[];  
+  }[];
 }

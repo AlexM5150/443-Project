@@ -42,11 +42,6 @@ export default function Expenses() {
     setCategory(response as ICategory);
   };
 
-  const getID = async (budget_id: string, category_id: string) => {
-    const { response } = await Server.get<ICategory>(`/user/budget/category?id=${budget_id}&category=${category_id}`);
-    setCategory(response as ICategory);
-  };
-
   /**
    * Custom Component for a dropdown menu of the categories
    * @returns a react component
@@ -132,12 +127,7 @@ export default function Expenses() {
               />
             </div>
             <div className="px-2">
-              {/* <button className="flex items-center bg-[#000000] text-white px-2 rounded-tr rounded-br" type="submit">
-                Submit
-              </button> */}
               <Button title="Submit" type="submit"></Button>
-
-              {/* <input type="submit" value="Submit" className="border" onSubmit="return handleSubmit();" /> */}
             </div>
           </form>
         </div>
