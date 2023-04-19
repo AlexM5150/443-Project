@@ -7,6 +7,7 @@ import { Dashboard } from "./pages";
 import Expenses from "./pages/Expenses";
 import UserBudget from "./pages/UserBudget";
 import Notifications from "./pages/Notifications";
+import EditExpense from "./pages/editExpense";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -15,11 +16,12 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path ="/expense" element={<Expenses />} />
-        
+        <Route path="/expense" element={<Expenses />} />
+
         <Route path="/notifications" element={<Notifications />} />
 
         <Route path="/budgets" element={<UserBudget />} />
+        <Route path="/editExpense" element={<EditExpense />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

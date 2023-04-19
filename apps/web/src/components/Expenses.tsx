@@ -33,7 +33,6 @@ function Expenses({
       `/user/budget/category/expenses?category=${category.value.trim()}&id=${id.value.trim()}&expense=${expense.value.trim()}`,
     );
     if (error) return setShow(error);
-    navigation("/budgets");
 
     // use an API call here to create an expense.
     // follow what Carlos did in App.tsx. also find a way to auto generate ID's
@@ -47,7 +46,13 @@ function Expenses({
         </h1>
         {/* deric handle these two. editing an expense and deleting an expense*/}
         <button>
-          <AiTwotoneEdit className="w-6 h-7 "></AiTwotoneEdit>
+          <AiTwotoneEdit
+            className="w-6 h-7 "
+            onClick={() => {
+              navigation("/editExpense", {
+                state: { title: title, cost: cost, category_id: category_id, id: id, budget_id: budget_id },
+              });
+            }}></AiTwotoneEdit>
         </button>
 
         <form onSubmit={deleteExpense}>
