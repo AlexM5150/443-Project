@@ -29,7 +29,6 @@ function App() {
     });
     if (error) return setShow(error);
     navigation("/budgets");
-    console.log("hi");
   }
 
   return (

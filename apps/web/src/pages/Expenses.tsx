@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/NavBar";
 import { IError } from "../types";
 import Server from "../tools/Server";
-import { Notification } from "../components";
+import { Button, Notification } from "../components";
 import { useLocation } from "react-router-dom";
 import { ICategory } from "../types";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,11 @@ export default function Expenses() {
     setCategory(response as ICategory);
   };
 
+  const getID = async (budget_id: string, category_id: string) => {
+    const { response } = await Server.get<ICategory>(`/user/budget/category?id=${budget_id}&category=${category_id}`);
+    setCategory(response as ICategory);
+  };
+
   /**
    * Custom Component for a dropdown menu of the categories
    * @returns a react component
@@ -69,23 +74,23 @@ export default function Expenses() {
     return <div>{PopulateDropDown()}</div>;
   };
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    console.log("hi");
     e.preventDefault();
     const form = e.currentTarget;
-    const { category, title, cost } = form.elements as typeof form.elements & {
+    const { category, title, cost, id } = form.elements as typeof form.elements & {
       category: HTMLInputElement;
       title: HTMLInputElement;
       cost: HTMLInputElement;
+      id: HTMLInputElement;
     };
 
-    const { error } = await Server.post(`/expenses}`, {
+    const { error } = await Server.post(`/user/budget/category/expenses`, {
       category: category.value.trim(),
       title: title.value.trim(),
       cost: cost.value.trim(),
+      id: id.value.trim(),
     });
     if (error) return setShow(error);
     navigation("/budgets");
-    console.log("hi");
 
     // use an API call here to create an expense.
     // follow what Carlos did in App.tsx. also find a way to auto generate ID's
@@ -99,6 +104,8 @@ export default function Expenses() {
         <div className="h-96 flex justify-evenly border border-t-gray-400">
           <form className="row-span-4 flex mt-4" onSubmit={handleSubmit}>
             <DropDownMenu />
+            <input type="hidden" id="category" value={category_id}></input>
+            <input type="hidden" id="id" value={budget_id}></input>
 
             <div className="px-2">
               <label className="text-sm flex mb-1">Name</label>
@@ -125,12 +132,11 @@ export default function Expenses() {
               />
             </div>
             <div className="px-2">
-              <button
-                className="flex items-center bg-[#000000] text-white px-2 rounded-tr rounded-br"
-                type="button"
-                onClick={() => handleSubmit}>
+              {/* <button className="flex items-center bg-[#000000] text-white px-2 rounded-tr rounded-br" type="submit">
                 Submit
-              </button>
+              </button> */}
+              <Button title="Submit" type="submit"></Button>
+
               {/* <input type="submit" value="Submit" className="border" onSubmit="return handleSubmit();" /> */}
             </div>
           </form>
