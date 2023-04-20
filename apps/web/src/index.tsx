@@ -8,6 +8,7 @@ import Expenses from "./pages/Expenses";
 import UserBudget from "./pages/UserBudget";
 import Notifications from "./pages/Notifications";
 import Categories from "./pages/Categories";
+import EditCategory from "./pages/EditCategory";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -18,6 +19,7 @@ root.render(
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path ="/expense" element={<Expenses />} />
         <Route path ="/categories" element={<Categories />} />
+        <Route path="/editCategory" element={<EditCategory />} />
         <Route path="/notifications" element={<Notifications />} />
 
         <Route path="/budgets" element={<UserBudget />} />
