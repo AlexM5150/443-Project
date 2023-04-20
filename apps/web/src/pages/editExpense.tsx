@@ -73,6 +73,7 @@ function EditExpense() {
                 className="w-full py-1.5 leading-loose px-2"
                 type="number"
                 min="0"
+                step='.01'
               />
             </div>
             <div className="px-2">
