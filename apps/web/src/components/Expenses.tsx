@@ -33,6 +33,7 @@ function Expenses({
       `/user/budget/category/expenses?category=${category.value.trim()}&id=${id.value.trim()}&expense=${expense.value.trim()}`,
     );
     if (error) return setShow(error);
+    window.location.reload();
 
     // use an API call here to create an expense.
     // follow what Carlos did in App.tsx. also find a way to auto generate ID's
