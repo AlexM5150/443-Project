@@ -8,7 +8,7 @@ import Expenses from "./pages/Expenses";
 import UserBudget from "./pages/UserBudget";
 import Notifications from "./pages/Notifications";
 import Categories from "./pages/Categories";
-import EditCategory from "./pages/EditCategory";
+import EditCategory from "./pages/editCategory";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
