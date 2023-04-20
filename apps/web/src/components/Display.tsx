@@ -68,7 +68,7 @@ export default function Display({budgets, currentBudget}: {budgets: IBudget[], c
                 
 
                 <ul className="list-inside">
-                <h2 className="text-lg font-medium p-4 mb-2">Total Budget: spent ${CurrentBudget?._current} out of ${CurrentBudget?._budget}</h2>
+                <h2 className="text-lg font-medium p-4 mb-2">Total Budget: spent ${Math.round((CurrentBudget?._current? CurrentBudget._current : 0) * 100) / 100} out of ${CurrentBudget?._budget}</h2>
                 <div className="p-4"><ProgressBar completed={Math.ceil((CurrentBudget?._current? CurrentBudget._current / CurrentBudget._budget: 0) * 100)} /></div>
                 {CurrentBudget?.expenses.map((category) => {
                         
@@ -79,7 +79,7 @@ export default function Display({budgets, currentBudget}: {budgets: IBudget[], c
                             <li key={category.category} className="p-4">
                                 <div className="flex flex-row">
                                 <h3 className="text-lg font-medium mb-2">
-                                    {category.category}: spent ${category.current} out of ${category.budget}
+                                    {category.category}: spent ${Math.round((category.current))} out of ${category.budget}
                                 </h3>
                                 </div>
                                 <ProgressBar completed={Math.floor(percentAmount)} />
