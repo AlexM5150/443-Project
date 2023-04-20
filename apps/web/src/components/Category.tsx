@@ -18,7 +18,7 @@ function Category({ category, category_id, budget, budget_id, current, onClick }
             </div>
             <div className="flex-col items-center justify-center flex">
                 <h2 className="text-lg font-medium p-2">Budget: ${budget}</h2>
-                <h2 className="text-lg font-medium p-2">Expenses: ${current}</h2>
+                <h2 className="text-lg font-medium p-2">Expenses: ${current.toFixed(2)}</h2>
             </div>
         </div>
     );
