@@ -81,9 +81,6 @@ export default function Expenses() {
       id: HTMLInputElement;
     };
 
-    const res = await Server.get<ICategory>(
-      "/user/budget/category?id=${id.value.trim()}&category=${category.value.trim()}",
-    );
     const potential = Number(cost.value.trim()) + Number(current);
     setShow({
       message: "You cannot add an expense to go over your budget",

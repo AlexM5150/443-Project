@@ -18,6 +18,7 @@ function EditExpense() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+
     const { category, title, cost, id, expense } = form.elements as typeof form.elements & {
       category: HTMLInputElement;
       title: HTMLInputElement;
@@ -26,12 +27,15 @@ function EditExpense() {
       expense: HTMLInputElement;
     };
 
-    const potential = Number(cost.value.trim()) + Number(current);
+    //Current is the Expenses
+    // cost is from FORM
+    //costs is old
+    const potential = Number(current) + (Number(costs) - Number(cost.value.trim()));
     setShow({
       message: "You cannot edit an expense to go over your budget",
       active: true,
     });
-    if (potential < budget + 1) {
+    if (potential < budget) {
       const { error } = await Server.put(`/user/budget/category/expenses`, {
         category: category.value.trim(),
         title: title.value.trim(),
