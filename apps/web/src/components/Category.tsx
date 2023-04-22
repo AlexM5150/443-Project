@@ -1,18 +1,39 @@
 import { AiOutlinePlusCircle } from "react-icons/ai";
 // import { AiTwotoneEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-function Category({ category, category_id, budget, budget_id, current, onClick }: { category: string, category_id: string, budget: number, budget_id: string, current: number, onClick: () => void }) {
-    const navigation = useNavigate();
-    return (
-        <div className="flex flex-row justify-between">
-            <div className="flex justify-between">
-            <button className="text-lg font-medium mb-2" onClick={onClick}>
-                <h1 className="text-2xl font-bold p-2">{category}</h1>
-            </button>
-            <button className="">
-                <AiOutlinePlusCircle className="w-6 h-7 " onClick={() => {navigation('/expense', {state: {budget_id: budget_id, category_id: category_id}});}}/>
-            </button>
-            {/* <button>
+function Category({
+  category,
+  category_id,
+  budget,
+  budget_id,
+  current,
+  onClick,
+}: {
+  category: string;
+  category_id: string;
+  budget: number;
+  budget_id: string;
+  current: number;
+  onClick: () => void;
+}) {
+  const navigation = useNavigate();
+  return (
+    <div className="flex flex-row justify-between">
+      <div className="flex justify-between">
+        <button className="text-lg font-medium mb-2" onClick={onClick}>
+          <h1 className="text-2xl font-bold p-2">{category}</h1>
+        </button>
+        <button className="">
+          <AiOutlinePlusCircle
+            className="w-6 h-7 "
+            onClick={() => {
+              navigation("/expense", {
+                state: { budget_id: budget_id, category_id: category_id, current: current, budget: budget },
+              });
+            }}
+          />
+        </button>
+        {/* <button>
                 <AiTwotoneEdit className="w-6 h-7 " />
             </button> */}
             </div>
@@ -24,4 +45,4 @@ function Category({ category, category_id, budget, budget_id, current, onClick }
     );
 }
 
-export default Category
+export default Category;
