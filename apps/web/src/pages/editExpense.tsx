@@ -15,7 +15,7 @@ function EditExpense() {
   const [titleName, setTitle] = useState(title);
   const [costs, setCost] = useState(cost);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>, ogCost: number) {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -30,7 +30,11 @@ function EditExpense() {
     //Current is the Expenses
     // cost is from FORM
     //costs is old
-    const potential = Number(current) + (Number(costs) - Number(cost.value.trim()));
+    const potential = Number(current) - Number(ogCost) + Number(cost.value.trim());
+    // console.log(Number(current))
+    // console.log(Number(ogCost))
+    // console.log(Number(cost.value.trim()))
+    // console.log(potential)
     setShow({
       message: "You cannot edit an expense to go over your budget",
       active: true,
@@ -54,7 +58,7 @@ function EditExpense() {
       <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
         <div className="text-center text-2xl mb-2 mt-2 justify-center items-center content-center">Edit Expense</div>
         <div className="h-96 flex justify-evenly border border-t-gray-400">
-          <form className="row-span-4 flex mt-4" onSubmit={handleSubmit}>
+          <form className="row-span-4 flex mt-4" onSubmit={(e) => handleSubmit(e, cost)}>
             {/* <DropDownMenu /> */}
             <input type="hidden" id="category" value={category_id}></input>
             <input type="hidden" id="id" value={budget_id}></input>
