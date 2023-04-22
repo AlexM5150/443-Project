@@ -10,7 +10,7 @@ function EditCategory() {
   const navigation = useNavigate();
   const [show, setShow] = useState<IError>({ message: "", active: false });
   const { state } = useLocation();
-  const { id, category, title, budget } = state;
+  const { id, category, title, budget, current } = state;
   const [titleName, setTitle] = useState(title);
   const [budgets, setBudget] = useState(budget);
 
@@ -23,15 +23,21 @@ function EditCategory() {
       title: HTMLInputElement;
       budget: HTMLInputElement;
     };
-
-    const { error } = await Server.put(`/user/budget/category`, {
-      id: id.value.trim(),
-      category: category.value.trim(), 
-      title: title.value.trim(),
-      budget: Number(budget.value.trim()),
+    setShow({
+      message: "You cannot edit a category to be under your expenses",
+      active: true,
     });
-    if (error) return setShow(error);
-    navigation("/budgets");
+    if (Number(budget.value.trim()) > Number(current)) {
+      const { error } = await Server.put(`/user/budget/category`, {
+        id: id.value.trim(),
+        category: category.value.trim(), 
+        title: title.value.trim(),
+        budget: Number(budget.value.trim()),
+      });
+      if (error) return setShow(error);
+      navigation("/budgets");
+    }
+    
   }
 
   return (

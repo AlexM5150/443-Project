@@ -36,7 +36,7 @@ function Category({ category, category_id, budget, budget_id, current, onClick }
             className="w-6 h-7 "
             onClick={() => {
               navigation("/editCategory", {
-                state: { id: budget_id, category: category_id, title: title, budget: budget },
+                state: { id: budget_id, category: category_id, title: title, budget: budget, current: current },
               });
             }}></AiTwotoneEdit>
         </button>}
