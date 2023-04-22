@@ -253,7 +253,8 @@ export class BudgetController {
 
   static async delExpense(req: Request, res: Response, next: NextFunction) {
     const { user } = req;
-    const { id, category, expense } = req.body;
+    const { id, category, expense } = req.body as {id: string; category: string; expense: string};
+    console.log(req.query);
     try {
       ApiError.check("body", { id, category, expense });
       const doc = await budgetsSchema.findOne(
