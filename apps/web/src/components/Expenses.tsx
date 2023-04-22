@@ -10,12 +10,16 @@ function Expenses({
   category_id,
   id,
   budget_id,
+  current,
+  budget,
 }: {
   title: string;
   cost: number;
   category_id: string;
   id: string;
   budget_id: string;
+  current: number;
+  budget: number;
 }) {
   const navigation = useNavigate();
   const [show, setShow] = useState<IError>({ message: "", active: false });
@@ -51,7 +55,15 @@ function Expenses({
             className="w-6 h-7 "
             onClick={() => {
               navigation("/editExpense", {
-                state: { title: title, cost: cost, category_id: category_id, id: id, budget_id: budget_id },
+                state: {
+                  title: title,
+                  cost: cost,
+                  category_id: category_id,
+                  id: id,
+                  budget_id: budget_id,
+                  current: current,
+                  budget: budget,
+                },
               });
             }}></AiTwotoneEdit>
         </button>

@@ -11,7 +11,7 @@ function EditExpense() {
   const navigation = useNavigate();
   const [show, setShow] = useState<IError>({ message: "", active: false });
   const { state } = useLocation();
-  const { title, cost, category_id, id, budget_id } = state;
+  const { title, cost, category_id, id, budget_id, current, budget } = state;
   const [titleName, setTitle] = useState(title);
   const [costs, setCost] = useState(cost);
 
@@ -26,15 +26,22 @@ function EditExpense() {
       expense: HTMLInputElement;
     };
 
-    const { error } = await Server.put(`/user/budget/category/expenses`, {
-      category: category.value.trim(),
-      title: title.value.trim(),
-      cost: Number(cost.value.trim()),
-      id: id.value.trim(), //budget id
-      expense: expense.value.trim(),
+    const potential = Number(cost.value.trim()) + Number(current);
+    setShow({
+      message: "You cannot edit an expense to go over your budget",
+      active: true,
     });
-    if (error) return setShow(error);
-    navigation("/budgets");
+    if (potential < budget + 1) {
+      const { error } = await Server.put(`/user/budget/category/expenses`, {
+        category: category.value.trim(),
+        title: title.value.trim(),
+        cost: Number(cost.value.trim()),
+        id: id.value.trim(), //budget id
+        expense: expense.value.trim(),
+      });
+      if (error) return setShow(error);
+      navigation("/budgets");
+    }
   }
 
   return (
@@ -73,7 +80,7 @@ function EditExpense() {
                 className="w-full py-1.5 leading-loose px-2"
                 type="number"
                 min="0"
-                step='.01'
+                step=".01"
               />
             </div>
             <div className="px-2">

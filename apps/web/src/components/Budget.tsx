@@ -42,6 +42,8 @@ function Budget({
                       category_id={category._id}
                       id={expense._id}
                       budget_id={budget._id}
+                      current={category.current}
+                      budget={category.budget}
                     />
                   ))}
               </div>

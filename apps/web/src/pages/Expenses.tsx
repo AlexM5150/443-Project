@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 export default function Expenses() {
   // passed in parameters thru the "UserBudget" page
   const { state } = useLocation();
-  const { budget_id, category_id } = state;
+  const { budget_id, category_id, current, budget } = state;
   const [show, setShow] = useState<IError>({ message: "", active: false });
   const [category, setCategory] = useState<ICategory>();
   // get a list of categories by calling the API
@@ -33,12 +33,14 @@ export default function Expenses() {
    */
   useEffect(() => {
     // using the passed in parameters to make an API call and set the category
-    getBudget(budget_id, category_id);
+    getBudget(budget_id, category_id, current, budget);
     // change to ensure that we have 1 category ID and budget ID
   }, []);
 
-  const getBudget = async (budget_id: string, category_id: string) => {
-    const { response } = await Server.get<ICategory>(`/user/budget/category?id=${budget_id}&category=${category_id}`);
+  const getBudget = async (budget_id: string, category_id: string, current: number, budget: number) => {
+    const { response } = await Server.get<ICategory>(
+      `/user/budget/category?id=${budget_id}&category=${category_id}&current=${current}&budget=${budget}`,
+    );
     setCategory(response as ICategory);
   };
 
@@ -71,6 +73,7 @@ export default function Expenses() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+
     const { category, title, cost, id } = form.elements as typeof form.elements & {
       category: HTMLInputElement;
       title: HTMLInputElement;
@@ -78,14 +81,26 @@ export default function Expenses() {
       id: HTMLInputElement;
     };
 
-    const { error } = await Server.post(`/user/budget/category/expenses`, {
-      category: category.value.trim(),
-      title: title.value.trim(),
-      cost: Number(cost.value.trim()),
-      id: id.value.trim(),
+    const res = await Server.get<ICategory>(
+      "/user/budget/category?id=${id.value.trim()}&category=${category.value.trim()}",
+    );
+    const potential = Number(cost.value.trim()) + Number(current);
+    setShow({
+      message: "You cannot add an expense to go over your budget",
+      active: true,
     });
-    if (error) return setShow(error);
-    navigation("/budgets");
+    if (potential < budget + 1) {
+      const { error } = await Server.post(`/user/budget/category/expenses`, {
+        category: category.value.trim(),
+        title: title.value.trim(),
+        cost: Number(cost.value.trim()),
+        id: id.value.trim(),
+      });
+
+      if (error) return setShow(error);
+
+      navigation("/budgets");
+    }
 
     // use an API call here to create an expense.
     // follow what Carlos did in App.tsx. also find a way to auto generate ID's
@@ -97,7 +112,7 @@ export default function Expenses() {
       <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
         <div className="text-center text-2xl mb-2 mt-2 justify-center items-center content-center">Add Expense</div>
         <div className="h-96 flex justify-evenly border border-t-gray-400">
-          <form className="row-span-4 flex mt-4" onSubmit={handleSubmit}>
+          <form id="expense" className="row-span-4 flex mt-4" onSubmit={handleSubmit}>
             <DropDownMenu />
             <input type="hidden" id="category" value={category_id}></input>
             <input type="hidden" id="id" value={budget_id}></input>
@@ -119,12 +134,13 @@ export default function Expenses() {
               <input
                 autoComplete="off"
                 required
+                name="costOfElement"
                 id="cost"
                 placeholder="4.99"
                 className="w-full py-1.5 leading-loose px-2"
                 type="number"
                 min="0"
-                step='.01'
+                step=".01"
               />
             </div>
             <div className="px-2">
