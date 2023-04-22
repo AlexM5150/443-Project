@@ -50,7 +50,7 @@ function Budget({
             );
           })}
           <div className="bg-gray-200 p-4">
-            <h2 className="text-lg font-medium mb-2">Total Expenses: ${budget._current}</h2>
+            <h2 className="text-lg font-medium mb-2">Total Expenses: ${budget._current.toFixed(2)}</h2>
           </div>
         </>
       )}
