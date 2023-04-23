@@ -145,9 +145,15 @@ export class BudgetController {
     const { id, category } = req.query as { id: string; category: string };
     try {
       ApiError.check("query", { id, category });
+      const data = await budgetsSchema.findOne({
+        _id: id,
+        _user: user._id,
+        expenses: { $elemMatch: { _id: category } },
+      });
+      if (!data) throw new ApiError(404, `Category ${category} not found`);
       const doc = await budgetsSchema.updateOne(
         { _id: id, _user: user._id, expenses: { $elemMatch: { _id: category } } },
-        { $pull: { expenses: { _id: category } } },
+        { $pull: { expenses: { _id: category } }, $inc: { _budget: -data.expenses[0].budget } },
       );
       if (!doc) throw new ApiError(404, `Category ${category} not found`);
       res.json({ code: 200, message: `Deleted category ${category}` });
