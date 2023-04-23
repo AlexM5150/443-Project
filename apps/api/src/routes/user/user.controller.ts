@@ -153,7 +153,7 @@ export class BudgetController {
       if (!data) throw new ApiError(404, `Category ${category} not found`);
       const doc = await budgetsSchema.updateOne(
         { _id: id, _user: user._id, expenses: { $elemMatch: { _id: category } } },
-        { $pull: { expenses: { _id: category } }, $inc: { _budget: -data.expenses[0].budget } },
+        { $pull: { expenses: { _id: category } }, $inc: { _current: -data.expenses[0].budget } },
       );
       if (!doc) throw new ApiError(404, `Category ${category} not found`);
       res.json({ code: 200, message: `Deleted category ${category}` });
