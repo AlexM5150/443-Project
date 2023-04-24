@@ -27,28 +27,56 @@ function AddBudget({ onCreate, onCancel }: AddBudgetProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">Title</label>
-      <input
-        type="text"
-        name="title"
-        id="title"
-        value={title}
-        onChange={handleTitleChange}
-      />
+    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+      <div className="mt-2">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
+          <div>
+            <label htmlFor="input1" className="block text-sm font-medium text-gray-700">
+              Title
+            </label>
+            <div className="mt-1">
+              <input
+                type="text"
+                name="input1"
+                id="input1"
+                className="shadow-sm focus:outline-none focus:ring-[#FFC72A] focus:border-[#FFC72A] block sm:text-sm border-gray-300 rounded-md"
+                value={title}
+                onChange={handleTitleChange}
+              />
+            </div>
+          </div>
 
-      <label htmlFor="amount">Amount</label>
-      <input
-        type="number"
-        name="amount"
-        id="amount"
-        value={amount}
-        onChange={handleAmountChange}
-      />
+          <div className="mt-4">
+            <label htmlFor="input2" className="block text-sm font-medium text-gray-700">
+              Amount
+            </label>
+            <div className="mt-1">
+              <input
+                type="number"
+                name="input2"
+                id="input2"
+                className="shadow-sm focus:outline-none focus:ring-[#FFC72A] focus:border-[#FFC72A] block w-full sm:text-sm border-gray-300 rounded-md"
+                value={amount}
+                onChange={handleAmountChange}
+              />
+            </div>
+          </div>
 
-      <button type="submit">Create Budget</button>
-      <button type="button" onClick={onCancel}>Cancel</button>
-    </form>
+          <div className="mt-4">
+            <button type="submit" className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-[#FFC72A] hover:bg-[#FFC72A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFC72A]">
+              Create
+            </button>
+            <button
+              type="button"
+              className="inline-flex items-center justify-center px-4 py-2 ml-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFC72A]"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 

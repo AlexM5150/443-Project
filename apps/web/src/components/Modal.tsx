@@ -14,7 +14,6 @@ type ModalProps = {
     onAmountChange: (event: ChangeEvent<HTMLInputElement>) => void;
     setBudgets: (value: SetStateAction<IBudget[]>) => void,
     budgets: IBudget[]
-    onAddBudget: (title: string, amount: number) => Promise<void>;
 };
 
 function Modal({
@@ -29,11 +28,9 @@ function Modal({
     onAmountChange,
     setBudgets,
     budgets,
-    onAddBudget
 }: ModalProps) {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await onAddBudget(title, Number(amount));
         const { error } = await Server.put<IBudget[]>('/user/budget', {
             _budget: amount,
             _title: title,
