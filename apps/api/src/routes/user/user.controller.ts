@@ -78,6 +78,12 @@ export class BudgetController {
     const { _budget, _title, _id } = req.body;
     try {
       ApiError.check("body", { _budget, _title, _id });
+      const budget = await budgetsSchema.findOne({ _id, _user: user._id });
+      if (!budget) throw new ApiError(404, `Budget ${_id} not found`);
+      const categories = budget.expenses.map((category) => category.budget);
+      const totalCategories = categories.reduce((a, b) => a + b, 0);
+      if (_budget < totalCategories)
+        throw new ApiError(400, `New budget ${_budget} can't be lower than the sum of categories budgets`);
       const result = await budgetsSchema.updateOne(
         { _id, _user: user._id },
         { $set: { _title, _budget } },
@@ -139,9 +145,15 @@ export class BudgetController {
     const { id, category } = req.query as { id: string; category: string };
     try {
       ApiError.check("query", { id, category });
+      const data = await budgetsSchema.findOne({
+        _id: id,
+        _user: user._id,
+        expenses: { $elemMatch: { _id: category } },
+      });
+      if (!data) throw new ApiError(404, `Category ${category} not found`);
       const doc = await budgetsSchema.updateOne(
         { _id: id, _user: user._id, expenses: { $elemMatch: { _id: category } } },
-        { $pull: { expenses: { _id: category } } },
+        { $pull: { expenses: { _id: category } }, $inc: { _current: -data.expenses[0].current } },
       );
       if (!doc) throw new ApiError(404, `Category ${category} not found`);
       res.json({ code: 200, message: `Deleted category ${category}` });
@@ -185,16 +197,16 @@ export class BudgetController {
       const matchingCategory = doc.expenses.filter((subdoc) => subdoc._id.toString() === category)[0];
       const categoriesBudget = doc.expenses.map((subdoc) => subdoc.budget).reduce((a, b) => a + b, 0);
       const newCatBudget = categoriesBudget - matchingCategory.budget + budget;
-      let exceed: string | null = null;
-      if (newCatBudget > doc._budget) exceed = `Sum of categories ${newCatBudget} exceed budget ${doc._budget}`;
+      if (newCatBudget > doc._budget)
+        throw new ApiError(400, `Sum of categories ${newCatBudget} exceed budget ${doc._budget}`);
       const expenses = matchingCategory.expenses.map((exp) => exp.cost).reduce((a, b) => a + b, 0);
-      if (budget < expenses) exceed = `The expenses of ${category} exceed the new budget ${budget}`;
+      if (budget < expenses) throw new ApiError(400, `The expenses of ${category} exceed the new budget ${budget}`);
       const update = await budgetsSchema.updateOne(
         { _id: id, _user: user._id, expenses: { $elemMatch: { _id: category } } },
         { $set: { "expenses.$.category": title, "expenses.$.budget": budget } },
       );
       if (!update) throw new ApiError(400, `Failed to update category ${category}`);
-      res.json({ code: 200, message: `Updated category ${category}`, data: { exceed } });
+      res.json({ code: 200, message: `Updated category ${category}` });
     } catch (e) {
       next(e);
     }
@@ -232,10 +244,9 @@ export class BudgetController {
       );
       if (!doc) throw new ApiError(404, `Category ${category} not found`);
       const { _current, expenses, _budget } = doc;
-      let exceed: string | null = null;
       if (expenses[0].current + cost > expenses[0].budget)
-        exceed = `You exceed your category budget ${expenses[0].budget}`;
-      if (_current + cost > _budget) exceed = `You exceed your budget ${_budget}`;
+        throw new ApiError(400, `You exceed your category budget ${expenses[0].budget}`);
+      if (_current + cost > _budget) throw new ApiError(400, `You exceed your budget ${_budget}`);
       const update = await budgetsSchema.findOneAndUpdate(
         { _id: id, _user: user._id, expenses: { $elemMatch: { _id: category } } },
         {
@@ -245,7 +256,7 @@ export class BudgetController {
         { runValidators: true, new: true },
       );
       if (!update) throw new ApiError(404, `Failed to add expense ${title} to category ${category}`);
-      res.json({ code: 200, message: `Expenses added`, data: { document: update, exceed } });
+      res.json({ code: 200, message: `Expenses added`, data: { document: update } });
     } catch (e) {
       next(e);
     }
@@ -253,9 +264,9 @@ export class BudgetController {
 
   static async delExpense(req: Request, res: Response, next: NextFunction) {
     const { user } = req;
-    const { id, category, expense } = req.body;
+    const { id, category, expense } = req.query as { id: string; category: string; expense: string };
     try {
-      ApiError.check("body", { id, category, expense });
+      ApiError.check("query", { id, category, expense });
       const doc = await budgetsSchema.findOne(
         { _id: id, _user: user._id, "expenses.expenses": { $elemMatch: { _id: expense } } },
         { "expenses.expenses.$": 1, _budget: 1, _current: 1 },
@@ -271,7 +282,6 @@ export class BudgetController {
       );
       if (!update || !update.modifiedCount)
         throw new ApiError(400, `Failed to delete expense ${expense} from category ${category}`);
-      console.log(update);
       res.json({ code: 200, message: `Expense ${expense} deleted` });
     } catch (e) {
       next(e);
@@ -292,11 +302,10 @@ export class BudgetController {
       const matchingExpense = matchingCategory.expenses.filter((subdoc) => subdoc._id.toString() === expense)[0];
       const sumExpenses =
         matchingCategory.expenses.map((subdoc) => subdoc.cost).reduce((a, b) => a + b, 0) - matchingExpense.cost + cost;
-      let exceed: string | null = null;
       if (sumExpenses > matchingCategory.budget)
-        exceed = `Sum of expenses ${sumExpenses} exceed the category budget ${matchingCategory.budget}`;
+        throw new ApiError(400, `Sum of expenses ${sumExpenses} exceed the category budget ${matchingCategory.budget}`);
       if (doc._current - matchingExpense.cost + cost > doc._budget)
-        exceed = `New expense exceeds the budget ${doc._budget}`;
+        throw new ApiError(400, `New expense exceeds the budget ${doc._budget}`);
       const update = await budgetsSchema.updateOne(
         { _id: id, _user: user._id, "expenses.expenses": { $elemMatch: { _id: expense } } },
         {
@@ -310,7 +319,7 @@ export class BudgetController {
         { arrayFilters: [{ "outer._id": category }, { "inner._id": expense }] },
       );
       if (!update) throw new ApiError(400, `Failed to update category ${category}`);
-      res.json({ code: 200, message: `Found expense ${expense} from category ${category}`, data: { exceed } });
+      res.json({ code: 200, message: `Found expense ${expense} from category ${category}` });
     } catch (e) {
       next(e);
     }

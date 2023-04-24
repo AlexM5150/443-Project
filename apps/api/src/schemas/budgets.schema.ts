@@ -6,6 +6,7 @@ const schema = new Schema<IBudgets>(
   {
     _user: { type: String, required: true },
     _current: { type: Number, default: 0 },
+    created: { type: Number, default: Date.now() },
     _budget: {
       type: Number,
       required: true,
@@ -19,8 +20,9 @@ const schema = new Schema<IBudgets>(
     _title: { type: String, required: true, unique: true },
     expenses: [
       {
-        category: { type: String, required: true},
+        category: { type: String, required: true },
         current: { type: Number, default: 0 },
+        created: { type: Number, default: Date.now() },
         budget: {
           type: Number,
           required: true,

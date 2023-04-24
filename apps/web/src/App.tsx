@@ -28,7 +28,9 @@ function App() {
       password: password.value.trim(),
     });
     if (error) return setShow(error);
-    //navigation("/dashboard");
+
+    navigation("/budgets");
+
   }
 
   return (
@@ -91,7 +93,6 @@ function App() {
         <Notification display={[show, setShow]} />
       </div>
     </div>
-
   );
 }
 
