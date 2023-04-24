@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { IError } from "./types";
 import { Server } from "./tools";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Notification } from "./components";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineSwap } from "react-icons/ai";
 import Cookies from "js-cookie";
 
 function App() {
   const navigation = useNavigate();
+  const [searchParams] = useSearchParams();
   const [visible, setVisible] = useState<boolean>(false);
-  const [show, setShow] = useState<IError>({ message: "", active: false });
+  const [show, setShow] = useState<IError>({
+    message: searchParams.get("error") || "",
+    active: searchParams.get("error") ? true : false,
+  });
   const [path, setPath] = useState({ name: "Sign in", url: "sign-in" });
 
   function handleButtonClick() {
@@ -31,7 +35,7 @@ function App() {
     if (error || !response) return setShow(error || { message: "Authentication failed", active: true });
     Server.setToken(response.token);
     // setTimeout(() => navigation("/home"), 2 * 1000);
-    navigation("/home")
+    navigation("/home");
   }
 
   return (
@@ -39,17 +43,10 @@ function App() {
       <div className="flex items-center justify-center h-screen w-screen">
         <div className="grid grid-rows-5 grid-flow-col gap-x-2 gap-y-2 bg-white p-2 rounded drop-shadow-md">
           <div className="row-span-5 w-80 hidden md:block">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/CSU-Longbeach_seal.svg/1200px-CSU-Longbeach_seal.svg.png"
-              alt="csulb-logo"
-            />
+            <img src="/csulb.png" alt="csulb-logo" />
           </div>
           <div className="col-span-2 bg-[#FFC72A] md:w-96 flex items-center justify-center space-x-4">
-            <img
-              className="w-6 h-6 block md:hidden"
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/CSU-Longbeach_seal.svg/1200px-CSU-Longbeach_seal.svg.png"
-              alt="csulb-logo"
-            />
+            <img className="w-6 h-6 block md:hidden" src="/csulb.png" alt="csulb-logo" />
             <h3>CECS 443 - Project</h3>
           </div>
           <form className="col-span-2 row-span-4 space-y-2 flex justify-evenly flex-col" onSubmit={handleSubmit}>

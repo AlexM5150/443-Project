@@ -18,7 +18,7 @@ function Budget({
 }) {
   return (
     <div>
-      <Title title={budget._title} budget={budget._budget} id = {budget._id} onClick={toggleOpen} />
+      <Title title={budget._title} budget={budget._budget} id={budget._id} onClick={toggleOpen} />
       {isOpen && (
         <>
           {budget.expenses.map((category, key) => {

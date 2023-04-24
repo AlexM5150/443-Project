@@ -6,6 +6,7 @@ import Server from "../tools/Server";
 import { Notification } from "../components";
 
 import Display from "../components/Display";
+import { useNavigate } from "react-router-dom";
 
 // Created by Dylan Huynh
 /**
@@ -13,12 +14,14 @@ import Display from "../components/Display";
  * @returns a react component that displays the most recent budget as a progress bar
  */
 export default function Notifications() {
+  const navigation = useNavigate();
   const [UserBudget, setUserBudget] = useState<IBudget[]>([]);
 
   useEffect(() => {
     const getBudget = async () => {
       // gets the budget and set it to a state
-      const { response } = await Server.get<IBudget[]>("/user/budget");
+      const { response, error } = await Server.get<IBudget[]>("/user/budget");
+      if (error) return navigation(`/?error=${error.message}`);
       setUserBudget(response as IBudget[]);
     };
     getBudget();
@@ -30,7 +33,10 @@ export default function Notifications() {
         <Navbar />
         <div className="container mx-auto mt-8 border border-gray-400 rounded-md overflow-hidden sm:w-1/2 lg:w-3/4 h-5/6">
           <h1 className="text-2xl font-bold bg-gray-100 p-4 mb-4">
-            Please add a <a href="/budgets" className="text-blue-500 underline">budget</a>
+            Please add a{" "}
+            <a href="/budgets" className="text-blue-500 underline">
+              budget
+            </a>
           </h1>
         </div>
       </div>
