@@ -13,7 +13,7 @@ declare module "express" {
 
 const app = express();
 
-app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+app.use(cors({ origin: [env.WEB_URL, env.DOMAIN], credentials: true }));
 
 app.use((req: Request, _res: Response, next: NextFunction) => {
   const url = parse(req.url);
