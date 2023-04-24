@@ -3,11 +3,12 @@ import mongoose from "mongoose";
 
 export default async function initDatabase() {
   mongoose.set("strictQuery", true);
-  mongoose.connect(`${env.DB_URL}/${env.DB_NAME}`, {
-    user: env.DB_USER,
-    pass: env.DB_PASSWORD,
-    authSource: "admin",
-  });
+  // mongoose.connect(`${env.DB_URL}/${env.DB_NAME}`, {
+  //   user: env.DB_USER,
+  //   pass: env.DB_PASSWORD,
+  //   authSource: "admin",
+  // });
+  mongoose.connect("mongodb+srv://lyjdbvswychvqdjbxc:HxaZI2KHMMyfuBkz@tmp-db.cm7e8aq.mongodb.net/?retryWrites=true&w=majority");
 
   const { connection } = mongoose;
 
