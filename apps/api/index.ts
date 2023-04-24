@@ -21,6 +21,16 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
+app.use(express.static(`${env.WEB_BUILD_PATH}`));
+
+app.get("/help", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/expense", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/categories", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/editCategory", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/home", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/budgets", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/editExpense", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+
 app.use("/api", routes);
 
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
