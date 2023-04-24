@@ -17,11 +17,11 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/help" element={<Dashboard />} />
         <Route path ="/expense" element={<Expenses />} />
         <Route path ="/categories" element={<Categories />} />
         <Route path="/editCategory" element={<EditCategory />} />
-        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/home" element={<Notifications />} />
 
         <Route path="/budgets" element={<UserBudget />} />
         <Route path="/editExpense" element={<EditExpense />} />

@@ -4,6 +4,7 @@ import { Server } from "./tools";
 import { useNavigate } from "react-router-dom";
 import { Button, Notification } from "./components";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineSwap } from "react-icons/ai";
+import Cookies from "js-cookie";
 
 function App() {
   const navigation = useNavigate();
@@ -23,14 +24,14 @@ function App() {
       email: HTMLInputElement;
       password: HTMLInputElement;
     };
-    const { error } = await Server.post(`/auth/${path.url}`, {
+    const { response, error } = await Server.post<{ token: string }>(`/auth/${path.url}`, {
       email: email.value.trim(),
       password: password.value.trim(),
     });
-    if (error) return setShow(error);
-
-    navigation("/budgets");
-
+    if (error || !response) return setShow(error || { message: "Authentication failed", active: true });
+    Server.setToken(response.token);
+    // setTimeout(() => navigation("/home"), 2 * 1000);
+    navigation("/home")
   }
 
   return (
@@ -82,11 +83,15 @@ function App() {
                 </button>
               </div>
             </div>
-            <div className=" grid grid-cols-2 place-items-center">
-              <Button title={path.name} type="submit" />
-              <Button title="" type="button" onClick={handleButtonClick}>
-                <AiOutlineSwap className="w-6 h-6" />
-              </Button>
+            <div className=" grid grid-cols-2 place-items-center space-x-4">
+              <div>
+                <Button title={path.name} type="submit" />
+              </div>
+              <div>
+                <Button title="" type="button" onClick={handleButtonClick}>
+                  <AiOutlineSwap className="w-6 h-6" />
+                </Button>
+              </div>
             </div>
           </form>
         </div>

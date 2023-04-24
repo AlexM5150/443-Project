@@ -32,6 +32,10 @@ class Server {
     return Server.instance;
   }
 
+  setToken(token: string) {
+    this.client.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+
   // eslint-disable-next-line
   private getError(e: any): IError {
     if (!isAxiosError(e)) return { message: "API request failed", active: true };
