@@ -1,13 +1,13 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import Button from "./Button";
 
 interface AddBudgetProps {
   onCreate: (title: string, amount: number) => void;
-  onCancel: () => void;
 }
 
-function AddBudget({ onCreate, onCancel }: AddBudgetProps) {
-  const [title, setTitle] = useState('');
-  const [amount, setAmount] = useState('');
+function AddBudget({ onCreate }: AddBudgetProps) {
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -19,63 +19,47 @@ function AddBudget({ onCreate, onCancel }: AddBudgetProps) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (title && amount) {
-      onCreate(title, Number(amount));
-      setTitle('');
-      setAmount('');
-    }
+    onCreate(title, Number(amount));
+    setTitle("");
+    setAmount("");
   };
 
   return (
     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-      <div className="mt-2">
-        <form onSubmit={handleSubmit} className="flex flex-col items-center">
-          <div>
-            <label htmlFor="input1" className="block text-sm font-medium text-gray-700">
-              Title
-            </label>
-            <div className="mt-1">
-              <input
-                type="text"
-                name="input1"
-                id="input1"
-                className="shadow-sm focus:outline-none focus:ring-[#FFC72A] focus:border-[#FFC72A] block sm:text-sm border-gray-300 rounded-md"
-                value={title}
-                onChange={handleTitleChange}
-              />
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <label htmlFor="input2" className="block text-sm font-medium text-gray-700">
-              Amount
-            </label>
-            <div className="mt-1">
-              <input
-                type="number"
-                name="input2"
-                id="input2"
-                className="shadow-sm focus:outline-none focus:ring-[#FFC72A] focus:border-[#FFC72A] block w-full sm:text-sm border-gray-300 rounded-md"
-                value={amount}
-                onChange={handleAmountChange}
-              />
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <button type="submit" className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-black bg-[#FFC72A] hover:bg-[#FFC72A] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFC72A]">
-              Create
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center px-4 py-2 ml-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFC72A]"
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={handleSubmit} className="items-center inline-flex space-x-4">
+        <h3 className="text-xl font-bold mx-4">Create a budget:</h3>
+        <div>
+          <label htmlFor="input1" className="block text-sm font-medium text-gray-700">
+            Title
+          </label>
+          <input
+            type="text"
+            name="input1"
+            id="input1"
+            required
+            className="w-full leading-loose px-2"
+            value={title}
+            onChange={handleTitleChange}
+          />
+        </div>
+        <div className="">
+          <label htmlFor="input2" className="block text-sm font-medium text-gray-700">
+            Amount
+          </label>
+          <input
+            type="number"
+            name="input2"
+            id="input2"
+            required
+            className="w-full leading-loose px-2"
+            value={amount}
+            onChange={handleAmountChange}
+          />
+        </div>
+        <div className="mt-4 inline-flex space-x-4">
+          <Button type="submit" title="Create" />
+        </div>
+      </form>
     </div>
   );
 }

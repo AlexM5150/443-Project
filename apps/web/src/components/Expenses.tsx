@@ -50,32 +50,34 @@ function Expenses({
           {title} ${cost}
         </h1>
         {/* deric handle these two. editing an expense and deleting an expense*/}
-        <button>
-          <AiTwotoneEdit
-            className="w-6 h-7 "
-            onClick={() => {
-              navigation("/editExpense", {
-                state: {
-                  title: title,
-                  cost: cost,
-                  category_id: category_id,
-                  id: id,
-                  budget_id: budget_id,
-                  current: current,
-                  budget: budget,
-                },
-              });
-            }}></AiTwotoneEdit>
-        </button>
-
-        <form onSubmit={deleteExpense}>
-          <input type="hidden" id="category" value={category_id}></input>
-          <input type="hidden" id="expense" value={id}></input>
-          <input type="hidden" id="id" value={budget_id}></input>
-          <button type="submit">
-            <AiTwotoneDelete className="w-6 h-7"></AiTwotoneDelete>
+        <div className="mx-2 inline-flex space-x-4 items-center justify-center">
+          <button>
+            <AiTwotoneEdit
+              className="w-6 h-6"
+              onClick={() => {
+                navigation("/editExpense", {
+                  state: {
+                    title: title,
+                    cost: cost,
+                    category_id: category_id,
+                    id: id,
+                    budget_id: budget_id,
+                    current: current,
+                    budget: budget,
+                  },
+                });
+              }}></AiTwotoneEdit>
           </button>
-        </form>
+
+          <form onSubmit={deleteExpense} className="flex items-center justify-center">
+            <input type="hidden" id="category" value={category_id}></input>
+            <input type="hidden" id="expense" value={id}></input>
+            <input type="hidden" id="id" value={budget_id}></input>
+            <button type="submit">
+              <AiTwotoneDelete className="w-6 h-6"></AiTwotoneDelete>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

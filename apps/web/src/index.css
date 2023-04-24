@@ -24,3 +24,8 @@ input {
   border: none;
   border-bottom: 1px solid black;
 }
+
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

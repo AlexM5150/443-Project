@@ -30,6 +30,7 @@ export default class AuthController {
       const user = await accountsSchema.findOne({ email }); // Account.encrypt(email)
       if (!user) throw new ApiError(404, "User not found");
       // if (!Account.verify(password, user.password)) throw new ApiError(403, "Invalid password");
+      if (password !== user.password) throw new ApiError(403, "Invalid password");
       const token = sign({ userId: user._id }, env.JWT_KEY);
       res.cookie("jwt", token);
       res.json({ code: 200, message: `Logged-in user ${user._id}`, data: { token } });

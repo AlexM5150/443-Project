@@ -38,14 +38,10 @@ function Budgets({
 }) {
   const [id, setId] = useState("");
 
-  const navigation = useNavigate();
-
   const handleOpenModal = (budgetId: string) => {
     setId(budgetId);
     setModalOpen(true);
   };
-
-  const [showAddBudget, setShowAddBudget] = useState(false);
 
   const resetBudget = async (budgetId: string) => {
     const { error } = await Server.put<IBudget[]>(`/user/budget/reset?id=${budgetId}`, {
@@ -72,6 +68,10 @@ function Budgets({
 
   return (
     <div className="flex w-full space-y-4 flex-col items-center">
+      <div className="flex justify-center flex-col items-center">
+        <AddBudget onCreate={(title, amount) => addBudget(title, amount)} />
+      </div>
+      <div className="border-b-2 w-full"></div>
       {budgets &&
         budgets.map((budget, key) => {
           return (
@@ -94,20 +94,6 @@ function Budgets({
             </div>
           );
         })}
-      <div className="flex justify-center flex-col items-center">
-        <Button onClick={() => setShowAddBudget(true)} title={"Add Budget"} type={"button"} />
-
-        {showAddBudget && (
-          <AddBudget
-            onCreate={(title, amount) => {
-              addBudget(title, amount);
-              setShowAddBudget(false);
-            }}
-            onCancel={() => setShowAddBudget(false)}
-          />
-        )}
-      </div>
-
       <Modal
         isOpen={modalOpen}
         onClose={() => {
