@@ -14,12 +14,8 @@ function Navbar() {
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <div className="flex items-center flex-shrink-0  mr-6">
-              <img
-                className="fill-current h-12 w-12 mr-4"
-                src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/CSU-Longbeach_seal.svg/1200px-CSU-Longbeach_seal.svg.png"
-                alt="csulb-logo"
-              />
-              <span className="font-semibold text-xl tracking-tight">CECS 443 - Project</span>
+              <img className="fill-current h-12 w-12 mr-4" src="/csulb.png" alt="csulb-logo" />
+              <span className="font-semibold text-xl tracking-tight">CECS 443 - Cash Control</span>
             </div>
             <div className="md:hidden">
               <button

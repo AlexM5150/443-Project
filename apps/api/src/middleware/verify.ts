@@ -7,7 +7,7 @@ export default class Verify {
   static authToken(authorization: string): string {
     if (!authorization) throw new ApiError(403, "Authorization header not found");
     const token = authorization.split(" ")[1];
-    if (token === undefined) throw new ApiError(403, "User token not connected");
+    if (token === "undefined") throw new ApiError(403, "User not connected");
     const result = verify(token, env.JWT_KEY) as { userId: string };
     return result.userId;
   }

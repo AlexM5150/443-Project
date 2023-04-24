@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+
 function Title({ title, budget, id, onClick }: { title: string; budget: number; id: string; onClick: () => void }) {
   const navigation = useNavigate();
   return (

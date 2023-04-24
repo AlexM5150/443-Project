@@ -13,11 +13,11 @@ function EditCategory() {
   const { id, category, title, budget, current } = state;
   const [titleName, setTitle] = useState(title);
   const [budgets, setBudget] = useState(budget);
-  
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const { id, category, title, budget} = form.elements as typeof form.elements & {
+    const { id, category, title, budget } = form.elements as typeof form.elements & {
       id: HTMLInputElement;
       category: HTMLInputElement;
       title: HTMLInputElement;
@@ -30,14 +30,13 @@ function EditCategory() {
     if (Number(budget.value.trim()) > Number(current)) {
       const { error } = await Server.put(`/user/budget/category`, {
         id: id.value.trim(),
-        category: category.value.trim(), 
+        category: category.value.trim(),
         title: title.value.trim(),
         budget: Number(budget.value.trim()),
       });
       if (error) return setShow(error);
       navigation("/budgets");
     }
-    
   }
 
   return (
