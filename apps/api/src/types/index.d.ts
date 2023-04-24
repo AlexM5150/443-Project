@@ -1,3 +1,3 @@
-import { IAccounts } from "./schemas";
+import { IAccounts, IBudgets } from "./schemas";
 
-export { IAccounts };
+export { IAccounts, IBudgets };

@@ -1,3 +1,4 @@
-import accountSchema from "./account.schema";
+import accountsSchema from "./accounts.schema";
+import budgetsSchema from "./budgets.schema";
 
-export { accountSchema };
+export { accountsSchema, budgetsSchema };

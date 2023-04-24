@@ -7,13 +7,13 @@ import express, { Request, Response, NextFunction } from "express";
 
 declare module "express" {
   export interface Request {
-    user: { id: string };
+    user: { _id: string; budget: number };
   }
 }
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: [env.WEB_URL, env.DOMAIN], credentials: true }));
 
 app.use((req: Request, _res: Response, next: NextFunction) => {
   const url = parse(req.url);
@@ -21,13 +21,27 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
+app.use(express.static(`${env.WEB_BUILD_PATH}`));
+
+app.get("/help", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/expense", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/categories", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/editCategory", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/home", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/budgets", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+app.get("/editExpense", (_req: Request, res: Response) => res.sendFile(`${env.WEB_BUILD_PATH}/index.html`));
+
 app.use("/api", routes);
 
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  if (err instanceof ApiError) return res.status(err.status).json(err);
+  if (err instanceof ApiError) return res.status(err.code).json(err);
   if (err instanceof AxiosError && err.response.data) return res.status(err.response.status).json(err.response.data);
+  if (err instanceof Error) {
+    if ("errors" in err) return res.status(400).json({ code: 400, message: err.message.split(":")[2].trim() });
+    return res.status(400).json({ code: 400, message: err.message });
+  }
   console.error(err, "[API] error");
-  res.status(500).send({ status: 500, error: "Something went wrong. Check logs" });
+  res.status(500).send({ code: 500, error: "Something went wrong. Check logs" });
 });
 
 initDatabase();
