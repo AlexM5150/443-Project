@@ -28,3 +28,12 @@ MONGO_INITDB_ROOT_PASSWORD='password'
 
 ME_CONFIG_MONGODB_URL='mongodb://user:password@mongo:27017'
 ```
+
+To launch the project (at root):
+
+```
+npm install
+npm run web (to run client side application)
+npm run api (to run server side application)
+docker-compose up -d (to run the docker-compose for the database)
+```
