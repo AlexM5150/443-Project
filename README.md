@@ -1,5 +1,7 @@
 # cecs443-project
 
+Github project url: https://github.com/S0lr4c3733/cecs443-project
+
 Authors: Dylan Huynh, Deric Chen, Alex Melford, Dening Zhang, David Aphing Kouassi, Carlos Alberto Thomas Frangeard
 
 install docker: https://docs.docker.com/get-docker/
